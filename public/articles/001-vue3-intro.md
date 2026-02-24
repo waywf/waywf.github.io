@@ -1,5 +1,5 @@
 ---
-title: Vue 3 Composition API 入门指南
+title: Vue 3 Composition API 入门指南11
 excerpt: 深入了解 Vue 3 的 Composition API，学习如何编写更灵活、可复用的组件逻辑。
 category: 技术
 date: 2026-02-23
