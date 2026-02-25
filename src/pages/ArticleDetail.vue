@@ -5,7 +5,7 @@
     <div v-if="article" class="flex-1">
       <!-- Article Header -->
       <section class="py-12 md:py-16 border-b border-[#2D3447]">
-        <div class="container max-w-3xl">
+        <div class="container max-w-4xl">
           <RouterLink to="/articles"
             class="inline-flex items-center gap-2 text-[#00FF41] hover:text-[#FF006E] transition-colors mb-8">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
 
       <!-- Article Content -->
       <section class="py-12 md:py-16">
-        <div class="container max-w-3xl">
+        <div class="container max-w-4xl">
           <div class="prose prose-invert max-w-none">
             <Streamdown :content="article.content" />
           </div>
@@ -66,9 +66,9 @@
 
       <!-- Navigation -->
       <section class="py-12 md:py-16 border-t border-[#2D3447]">
-        <div class="container max-w-3xl">
+        <div class="container max-w-4xl">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <RouterLink v-if="prevArticle" :to="`/article/${prevArticle.id}`"
+            <a v-if="prevArticle" :href="`/article/${prevArticle.id}`"
               class="group p-6 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 hover:border-[#00FF41] transition-all">
               <div class="flex items-center gap-2 text-[#00FF41] mb-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,10 +79,10 @@
               <h3 class="text-[#E0E0E0] group-hover:text-[#00FF41] transition-colors">
                 {{ prevArticle.title }}
               </h3>
-            </RouterLink>
+            </a>
             <div v-else></div>
 
-            <RouterLink v-if="nextArticle" :to="`/article/${nextArticle.id}`"
+            <a v-if="nextArticle" :href="`/article/${nextArticle.id}`"
               class="group p-6 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 hover:border-[#00FF41] transition-all text-right">
               <div class="flex items-center justify-end gap-2 text-[#00FF41] mb-2">
                 <span>下一篇</span>
@@ -93,7 +93,7 @@
               <h3 class="text-[#E0E0E0] group-hover:text-[#00FF41] transition-colors">
                 {{ nextArticle.title }}
               </h3>
-            </RouterLink>
+            </a>
             <div v-else></div>
           </div>
         </div>
@@ -142,18 +142,22 @@ onMounted(async () => {
     // 加载所有文章以便导航
     const articles = await loadAllArticles()
     allArticles.value = articles
+    console.log('All articles:', articles.length)
+    console.log('Current article:', article.value?.id)
+    console.log('Current index:', currentIndex.value)
   } catch (error) {
     console.error('Failed to load article:', error)
   }
 })
 
 const currentIndex = computed(() => {
-  if (!article.value) return -1
-  return allArticles.value.findIndex(a => a.id === article.value?.id)
+  if (!article.value || allArticles.value.length === 0) return -1
+  return allArticles.value.findIndex(a => a.id === article.value.id)
 })
 
 const prevArticle = computed(() => {
   const index = currentIndex.value
+  console.log('Prev article index:', index)
   if (index > 0) {
     return allArticles.value[index - 1]
   }
@@ -162,6 +166,7 @@ const prevArticle = computed(() => {
 
 const nextArticle = computed(() => {
   const index = currentIndex.value
+  console.log('Next article index:', index)
   if (index >= 0 && index < allArticles.value.length - 1) {
     return allArticles.value[index + 1]
   }

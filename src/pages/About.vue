@@ -16,7 +16,7 @@
 
     <!-- About Content -->
     <section class="py-12 md:py-16 flex-1">
-      <div class="container max-w-3xl">
+      <div class="container max-w-4xl">
         <!-- Introduction -->
         <div class="mb-12 p-8 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50">
           <h2 class="text-2xl font-bold mb-4 text-[#00FF41]">

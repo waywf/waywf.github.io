@@ -4,7 +4,7 @@ excerpt: 深入了解 Vue 3 的 Composition API，学习如何编写更灵活、
 category: 技术
 date: 2026-02-23
 # readTime: 8
-tags: Vue3, JavaScript, 前端开发
+tags: Vue3, JavaScript
 ---
 
 # Vue 3 Composition API 入门指南

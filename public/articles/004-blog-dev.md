@@ -4,7 +4,7 @@ excerpt: 记录使用 Vue 3 + Vite + Tailwind CSS 开发个人博客系统的完
 category: 技术
 date: 2026-02-24
 # readTime: 12
-tags: Vue3, Vite, TailwindCSS, 部署
+tags: Vue3, Vite, Tailwind, 部署
 ---
 
 # 博客系统开发实战 - 从设计到部署

@@ -18,5 +18,181 @@
   {
     "id": "005-prototype",
     "filename": "005-prototype.md"
+  },
+  {
+    "id": "006-llm",
+    "filename": "006-llm.md"
+  },
+  {
+    "id": "007-mcp",
+    "filename": "007-mcp.md"
+  },
+  {
+    "id": "008-ai-agent",
+    "filename": "008-ai-agent.md"
+  },
+  {
+    "id": "009-skill",
+    "filename": "009-skill.md"
+  },
+  {
+    "id": "010-prompt",
+    "filename": "010-prompt.md"
+  },
+  {
+    "id": "011-llm-answer",
+    "filename": "011-llm-answer.md"
+  },
+  {
+    "id": "012-ai-training",
+    "filename": "012-ai-training.md"
+  },
+  {
+    "id": "013-ai-ethics",
+    "filename": "013-ai-ethics.md"
+  },
+  {
+    "id": "014-ai-security",
+    "filename": "014-ai-security.md"
+  },
+  {
+    "id": "015-ai-future",
+    "filename": "015-ai-future.md"
+  },
+  {
+    "id": "016-lexical-scoping",
+    "filename": "016-lexical-scoping.md"
+  },
+  {
+    "id": "017-execution-context-stack",
+    "filename": "017-execution-context-stack.md"
+  },
+  {
+    "id": "018-variable-object",
+    "filename": "018-variable-object.md"
+  },
+  {
+    "id": "019-scope-chain",
+    "filename": "019-scope-chain.md"
+  },
+  {
+    "id": "020-this",
+    "filename": "020-this.md"
+  },
+  {
+    "id": "021-settimeout-closure",
+    "filename": "021-settimeout-closure.md"
+  },
+  {
+    "id": "022-currying",
+    "filename": "022-currying.md"
+  },
+  {
+    "id": "023-vue-reactive",
+    "filename": "023-vue-reactive.md"
+  },
+  {
+    "id": "024-vue-compiler",
+    "filename": "024-vue-compiler.md"
+  },
+  {
+    "id": "025-vue-render",
+    "filename": "025-vue-render.md"
+  },
+  {
+    "id": "026-execution-context",
+    "filename": "026-execution-context.md"
+  },
+  {
+    "id": "027-closure",
+    "filename": "027-closure.md"
+  },
+  {
+    "id": "028-pass-by-value",
+    "filename": "028-pass-by-value.md"
+  },
+  {
+    "id": "029-call-apply",
+    "filename": "029-call-apply.md"
+  },
+  {
+    "id": "030-bind",
+    "filename": "030-bind.md"
+  },
+  {
+    "id": "031-new",
+    "filename": "031-new.md"
+  },
+  {
+    "id": "032-array-like",
+    "filename": "032-array-like.md"
+  },
+  {
+    "id": "033-object-creation",
+    "filename": "033-object-creation.md"
+  },
+  {
+    "id": "034-inheritance",
+    "filename": "034-inheritance.md"
+  },
+  {
+    "id": "035-interview-question",
+    "filename": "035-interview-question.md"
+  },
+  {
+    "id": "036-vue-update",
+    "filename": "036-vue-update.md"
+  },
+  {
+    "id": "037-vue-async-update",
+    "filename": "037-vue-async-update.md"
+  },
+  {
+    "id": "038-vue-diff",
+    "filename": "038-vue-diff.md"
+  },
+  {
+    "id": "039-vue-mixin",
+    "filename": "039-vue-mixin.md"
+  },
+  {
+    "id": "040-vue-component",
+    "filename": "040-vue-component.md"
+  },
+  {
+    "id": "041-vue-watch",
+    "filename": "041-vue-watch.md"
+  },
+  {
+    "id": "042-vue-computed",
+    "filename": "042-vue-computed.md"
+  },
+  {
+    "id": "043-vue-global-api",
+    "filename": "043-vue-global-api.md"
+  },
+  {
+    "id": "044-lexical-scope",
+    "filename": "044-lexical-scope.md"
+  },
+  {
+    "id": "045-llm-training",
+    "filename": "045-llm-training.md"
+  },
+  {
+    "id": "046-ai-agent",
+    "filename": "046-ai-agent.md"
+  },
+  {
+    "id": "047-ai-safety",
+    "filename": "047-ai-safety.md"
+  },
+  {
+    "id": "048-ai-ethics",
+    "filename": "048-ai-ethics.md"
+  },
+  {
+    "id": "049-ai-future",
+    "filename": "049-ai-future.md"
   }
 ]

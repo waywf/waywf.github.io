@@ -127,7 +127,8 @@
                 {{ article.title }}
               </h3>
 
-              <p class="text-[#A0A0A0] text-sm mb-4 line-clamp-2">
+              <p
+                class="text-[#A0A0A0] text-sm mb-4 line-clamp-2 group-hover:text-[#00FF41] transition-colors min-h-[2.5rem]">
                 {{ article.excerpt }}
               </p>
 
