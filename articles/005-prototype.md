@@ -4,7 +4,7 @@ excerpt: 深入理解JavaScript的原型和原型链机制
 category: 技术
 date: 2026-02-24
 readTime: 15
-tags: JavaScript, 前端开发, 底层系列
+tags: JavaScript, 底层系列
 ---
 
 # JavaScript深入之从原型到原型链
@@ -46,6 +46,8 @@ console.log(person2.name) // Kevin
 那什么是原型呢？你可以这样理解：每一个JavaScript对象(null除外)在创建的时候就会与之关联另一个对象，这个对象就是我们所说的原型，每一个对象都会从原型"继承"属性。
 
 让我们用一张图表示构造函数和实例原型之间的关系：
+
+![构造函数和实例原型之间的关系](https://camo.githubusercontent.com/02789d6806b75d34b2017021f58efa3aa7a2ee6be8a0c05fb3293438884b9ec0/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f70726f746f74797065312e706e67)
 
 在这张图中我们用 Object.prototype 表示实例原型。
 
