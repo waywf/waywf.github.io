@@ -6,7 +6,8 @@
       <!-- Article Header -->
       <section class="py-12 md:py-16 border-b border-[#2D3447]">
         <div class="container max-w-3xl">
-          <RouterLink to="/articles" class="inline-flex items-center gap-2 text-[#00FF41] hover:text-[#FF006E] transition-colors mb-8">
+          <RouterLink to="/articles"
+            class="inline-flex items-center gap-2 text-[#00FF41] hover:text-[#FF006E] transition-colors mb-8">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -20,19 +21,22 @@
           <div class="flex flex-wrap gap-6 text-[#A0A0A0]">
             <div class="flex items-center gap-2">
               <svg class="w-5 h-5 text-[#00FF41]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               <span>{{ formatDate(article.date) }}</span>
             </div>
             <div class="flex items-center gap-2">
               <svg class="w-5 h-5 text-[#FF006E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>{{ article.readTime }} min read</span>
             </div>
             <div class="flex items-center gap-2">
               <svg class="w-5 h-5 text-[#00D9FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg>
               <span>{{ article.category }}</span>
             </div>
@@ -51,11 +55,8 @@
           <div class="mt-12 pt-8 border-t border-[#2D3447]">
             <h3 class="text-[#00FF41] font-bold mb-4">标签</h3>
             <div class="flex flex-wrap gap-3">
-              <span
-                v-for="tag in article.tags"
-                :key="tag"
-                class="px-4 py-2 bg-[#FF006E]/20 text-[#FF006E] rounded font-bold hover:bg-[#FF006E]/30 transition-colors cursor-pointer"
-              >
+              <span v-for="tag in article.tags" :key="tag"
+                class="px-4 py-2 bg-[#FF006E]/20 text-[#FF006E] rounded font-bold hover:bg-[#FF006E]/30 transition-colors cursor-pointer">
                 #{{ tag }}
               </span>
             </div>
@@ -67,11 +68,8 @@
       <section class="py-12 md:py-16 border-t border-[#2D3447]">
         <div class="container max-w-3xl">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <RouterLink
-              v-if="prevArticle"
-              :to="`/article/${prevArticle.id}`"
-              class="group p-6 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 hover:border-[#00FF41] transition-all"
-            >
+            <RouterLink v-if="prevArticle" :to="`/article/${prevArticle.id}`"
+              class="group p-6 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 hover:border-[#00FF41] transition-all">
               <div class="flex items-center gap-2 text-[#00FF41] mb-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -84,11 +82,8 @@
             </RouterLink>
             <div v-else></div>
 
-            <RouterLink
-              v-if="nextArticle"
-              :to="`/article/${nextArticle.id}`"
-              class="group p-6 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 hover:border-[#00FF41] transition-all text-right"
-            >
+            <RouterLink v-if="nextArticle" :to="`/article/${nextArticle.id}`"
+              class="group p-6 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 hover:border-[#00FF41] transition-all text-right">
               <div class="flex items-center justify-end gap-2 text-[#00FF41] mb-2">
                 <span>下一篇</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +104,8 @@
       <div class="text-center">
         <h1 class="text-4xl font-bold text-[#FF006E] mb-4">404</h1>
         <p class="text-[#A0A0A0] mb-8">文章未找到</p>
-        <RouterLink to="/articles" class="inline-flex items-center gap-2 px-6 py-3 bg-[#00FF41] text-[#0F1419] font-bold rounded hover:shadow-lg hover:shadow-[#00FF41]/50 transition-all">
+        <RouterLink to="/articles"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-[#00FF41] text-[#0F1419] font-bold rounded hover:shadow-lg hover:shadow-[#00FF41]/50 transition-all">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
@@ -142,7 +138,7 @@ onMounted(async () => {
     if (loadedArticle) {
       article.value = loadedArticle
     }
-    
+
     // 加载所有文章以便导航
     const articles = await loadAllArticles()
     allArticles.value = articles
@@ -178,5 +174,4 @@ const formatDate = (dateStr: string): string => {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -71,7 +71,7 @@
 
               <div class="flex items-center justify-between">
                 <div class="flex flex-wrap gap-2">
-                  <span v-for="tag in article.tags.slice(0, 2)" :key="tag" class="text-xs text-[#FF006E]">
+                  <span v-for="tag in article.tags" :key="tag" class="text-xs text-[#FF006E]">
                     #{{ tag }}
                   </span>
                 </div>

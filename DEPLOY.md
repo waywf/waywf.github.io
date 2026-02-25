@@ -1,6 +1,6 @@
 # GitHub Pages 部署指南
 
-本指南将帮助您将"安澄的个人空间"博客网站部署到 GitHub Pages。
+本指南将帮助您将"70KG的个人空间"博客网站部署到 GitHub Pages。
 
 ## 前置条件
 

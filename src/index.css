@@ -1,7 +1,12 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
-
+.prose {
+    :where(pre):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        padding: 0;
+    }
+}
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

@@ -3,8 +3,8 @@ title: Vue 3 Composition API 入门指南
 excerpt: 深入了解 Vue 3 的 Composition API，学习如何编写更灵活、可复用的组件逻辑。
 category: 技术
 date: 2026-02-23
-readTime: 8
-tags: [Vue3, JavaScript, 前端开发]
+# readTime: 8
+tags: Vue3, JavaScript, 前端开发
 ---
 
 # Vue 3 Composition API 入门指南
@@ -19,7 +19,7 @@ Composition API 是一组低级别的 API，允许我们使用函数来组织组
 
 #### 1. `setup()` 函数
 
-```javascript
+``` js
 import { ref, computed } from 'vue'
 
 export default {
@@ -42,7 +42,7 @@ export default {
 
 #### 2. `ref()` - 创建响应式引用
 
-```javascript
+``` js
 import { ref } from 'vue'
 
 const count = ref(0)
@@ -53,7 +53,7 @@ console.log(count.value) // 1
 
 #### 3. `reactive()` - 创建响应式对象
 
-```javascript
+``` js
 import { reactive } from 'vue'
 
 const state = reactive({
@@ -68,7 +68,7 @@ state.count++
 
 在 Composition API 中，生命周期钩子使用 `on` 前缀：
 
-```javascript
+``` js
 import { onMounted, onUpdated, onUnmounted } from 'vue'
 
 export default {
@@ -92,7 +92,7 @@ export default {
 
 Composition API 最强大的特性是能够轻松提取和复用逻辑：
 
-```javascript
+``` js
 // useCounter.js
 import { ref, computed } from 'vue'
 

@@ -3,8 +3,8 @@ title: Tailwind CSS 完全指南
 excerpt: 掌握 Tailwind CSS 的核心概念，学习如何快速构建现代化的用户界面。
 category: 技术
 date: 2026-02-22
-readTime: 10
-tags: [Tailwind, CSS, 前端设计]
+# readTime: 10
+tags: Tailwind, CSS, 前端设计
 ---
 
 # Tailwind CSS 完全指南

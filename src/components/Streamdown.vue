@@ -4,35 +4,36 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import MarkdownIt from 'markdown-it'
-import markdownItAnchor from 'markdown-it-anchor'
-import markdownItHighlightJs from 'markdown-it-highlightjs'
-
+import markdownit from 'markdown-it'
+// import markdownItAnchor from 'markdown-it-anchor'
+// import markdownItHighlightJs from 'markdown-it-highlightjs'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/atom-one-dark.css'
 interface Props {
   content: string
 }
 
 const props = defineProps<Props>()
 
-const md = new MarkdownIt({
+const md = markdownit({
   html: true,
   linkify: true,
   typographer: true,
   highlight: (str, lang) => {
-    if (lang && lang.match(/^ts$|^js$|^vue$|^html$|^css$|^python$/)) {
+    if (lang && hljs.getLanguage(lang)) {
       try {
-        return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
-      } catch {
-        return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
-      }
+        return '<pre><code class="hljs">' +
+          hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+          '</code></pre>';
+      } catch (__) { }
     }
-    return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
+    return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
   }
 })
-  .use(markdownItAnchor, {
-    permalink: markdownItAnchor.permalink.headerLink()
-  })
-  .use(markdownItHighlightJs)
+// .use(markdownItAnchor, {
+//   permalink: markdownItAnchor.permalink.headerLink()
+// })
+// .use(markdownItHighlightJs)
 
 const renderedContent = computed(() => {
   try {
@@ -44,5 +45,4 @@ const renderedContent = computed(() => {
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

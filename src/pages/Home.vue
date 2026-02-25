@@ -18,7 +18,7 @@
 
           <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             <span class="text-[#00FF41]">{'<'} </span>
-                <span class="text-[#E0E0E0]">安澄</span>
+                <span class="text-[#E0E0E0]">70KG</span>
                 <span class="text-[#FF006E]">{'>'}</span>
           </h1>
 
