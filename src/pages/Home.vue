@@ -10,7 +10,7 @@
     }">
       <div class="absolute inset-0 bg-[#0F1419]/70"></div>
       <div class="container relative z-10">
-        <div class="max-w-2xl animate-slide-in-left">
+        <div class="max-w-3xl animate-slide-in-left">
           <div class="mb-6 inline-block">
             <span class="text-[#00FF41] text-sm font-bold tracking-widest">
               {'>> WELCOME TO MY SPACE <<'} </span>

@@ -100,18 +100,17 @@ git push -u origin main
 
 ```
 ancheng_blog/
-├── client/
-│   ├── src/
-│   │   ├── pages/          # Vue 页面组件
-│   │   ├── components/     # 可复用组件
-│   │   ├── lib/            # 工具函数
-│   │   ├── App.vue         # 根组件
-│   │   ├── main.ts         # 入口文件
-│   │   └── index.css       # 全局样式
-│   ├── public/
-│   │   ├── articles/       # Markdown 文章
-│   │   └── images/         # 图片资源
-│   └── index.html          # HTML 模板
+├── src/
+│   ├── pages/          # Vue 页面组件
+│   ├── components/     # 可复用组件
+│   ├── lib/            # 工具函数
+│   ├── App.vue         # 根组件
+│   ├── main.ts         # 入口文件
+│   └── index.css       # 全局样式
+├── public/
+│   ├── articles/       # Markdown 文章
+│   └── images/         # 图片资源
+├── index.html          # HTML 模板
 ├── vite.config.ts          # Vite 配置
 ├── tsconfig.json           # TypeScript 配置
 ├── package.json            # 项目依赖
@@ -133,5 +132,5 @@ MIT
 ## 🤝 联系方式
 
 - GitHub: [@waywf](https://github.com/waywf)
-- Email: your-email@example.com
+- Email: 381531043@qq.com
 - Twitter: [@waywf](https://twitter.com/waywf)
