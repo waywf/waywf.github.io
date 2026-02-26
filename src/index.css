@@ -6,6 +6,42 @@
     :where(pre):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
         padding: 0;
     }
+    
+    /* Light theme prose styles */
+    :where(p, li, ul, ol):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--foreground);
+    }
+    
+    :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--foreground);
+    }
+    
+    :where(strong):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--foreground);
+    }
+    
+    :where(a):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--primary);
+    }
+    
+    :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--muted-foreground);
+        border-left-color: var(--border);
+    }
+    
+    :where(hr):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        border-color: var(--border);
+    }
+    
+    :where(th, td):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--foreground);
+        border-color: var(--border);
+    }
+    
+    /* :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--foreground);
+        background-color: var(--muted);
+    } */
 }
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -55,42 +91,44 @@
   --dark-card: #1A1F2E;
   --light-text: #E0E0E0;
   
-  --primary: #00FF41;
-  --primary-foreground: #0F1419;
-  --sidebar-primary: #00FF41;
-  --sidebar-primary-foreground: #0F1419;
-  --chart-1: #00FF41;
-  --chart-2: #FF006E;
-  --chart-3: #00D9FF;
-  --chart-4: #00FF41;
-  --chart-5: #FF006E;
+  /* Light theme colors (default) */
+  --primary: #059669;
+  --primary-foreground: #FFFFFF;
+  --sidebar-primary: #059669;
+  --sidebar-primary-foreground: #FFFFFF;
+  --chart-1: #059669;
+  --chart-2: #DC2626;
+  --chart-3: #0891B2;
+  --chart-4: #059669;
+  --chart-5: #DC2626;
   --radius: 0.5rem;
-  --background: #0F1419;
-  --foreground: #E0E0E0;
-  --card: #1A1F2E;
-  --card-foreground: #E0E0E0;
-  --popover: #1A1F2E;
-  --popover-foreground: #E0E0E0;
-  --secondary: #1A1F2E;
-  --secondary-foreground: #00FF41;
-  --muted: #2D3447;
-  --muted-foreground: #A0A0A0;
-  --accent: #FF006E;
-  --accent-foreground: #E0E0E0;
-  --destructive: #FF006E;
-  --destructive-foreground: #E0E0E0;
-  --border: #2D3447;
-  --input: #1A1F2E;
-  --ring: #00FF41;
-  --sidebar: #0F1419;
-  --sidebar-foreground: #E0E0E0;
-  --sidebar-accent: #FF006E;
-  --sidebar-accent-foreground: #E0E0E0;
-  --sidebar-border: #2D3447;
-  --sidebar-ring: #00FF41;
+  --background: #FAFAFA;
+  --foreground: #1F2937;
+  --card: #FFFFFF;
+  --card-foreground: #1F2937;
+  --popover: #FFFFFF;
+  --popover-foreground: #1F2937;
+  --secondary: #F3F4F6;
+  --secondary-foreground: #059669;
+  --muted: #E5E7EB;
+  --muted-foreground: #6B7280;
+  --accent: #DC2626;
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #E5E7EB;
+  --input: #F3F4F6;
+  --ring: #059669;
+  --sidebar: #FAFAFA;
+  --sidebar-foreground: #1F2937;
+  --sidebar-accent: #DC2626;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #059669;
 }
 
 .dark {
+  /* Dark theme colors (cyberpunk) */
   --primary: #00FF41;
   --primary-foreground: #0F1419;
   --sidebar-primary: #00FF41;
@@ -174,8 +212,9 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
-    padding-right: 1rem;
+    /* 16px - tablet padding */
+    /* padding-left: 1rem;
+    padding-right: 1rem; */
   }
 
   .flex {
@@ -185,15 +224,17 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
-      padding-right: 1.5rem;
+      /* 24px - tablet padding */
+      /* padding-left: 1.5rem; 
+      padding-right: 1.5rem; */
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
-      padding-right: 2rem;
+       /* 32px - desktop padding */
+      /* padding-left: 2rem;
+      padding-right: 2rem; */
       max-width: 1280px; /* Standard content width */
     }
   }

@@ -1,7 +1,7 @@
 ---
 title: JavaScript深入之从原型到原型链
 excerpt: 深入理解JavaScript的原型和原型链机制
-category: 技术
+category: 前端开发
 date: 2026-02-24
 readTime: 15
 tags: JavaScript, 底层系列

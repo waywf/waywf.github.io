@@ -1,13 +1,5 @@
 [
   {
-    "id": "001-vue3-intro",
-    "filename": "001-vue3-intro.md"
-  },
-  {
-    "id": "002-tailwind-css",
-    "filename": "002-tailwind-css.md"
-  },
-  {
     "id": "003-life-thoughts",
     "filename": "003-life-thoughts.md"
   },
@@ -194,5 +186,57 @@
   {
     "id": "049-ai-future",
     "filename": "049-ai-future.md"
+  },
+  {
+    "id": "050-python-ai-backend",
+    "filename": "050-python-ai-backend.md"
+  },
+  {
+    "id": "051-python-llm-framework",
+    "filename": "051-python-llm-framework.md"
+  },
+  {
+    "id": "052-python-multi-agent",
+    "filename": "052-python-multi-agent.md"
+  },
+  {
+    "id": "053-python-ai-security",
+    "filename": "053-python-ai-security.md"
+  },
+  {
+    "id": "054-python-ai-ethics",
+    "filename": "054-python-ai-ethics.md"
+  },
+  {
+    "id": "055-ai-replace-programmer",
+    "filename": "055-ai-replace-programmer.md"
+  },
+  {
+    "id": "056-ai-code-tools",
+    "filename": "056-ai-code-tools.md"
+  },
+  {
+    "id": "057-algorithm-complexity",
+    "filename": "057-algorithm-complexity.md"
+  },
+  {
+    "id": "058-javascript-algorithms",
+    "filename": "058-javascript-algorithms.md"
+  },
+  {
+    "id": "059-design-patterns",
+    "filename": "059-design-patterns.md"
+  },
+  {
+    "id": "060-openclaw-local",
+    "filename": "060-openclaw-local.md"
+  },
+  {
+    "id": "061-aigc-workflow",
+    "filename": "061-aigc-workflow.md"
+  },
+  {
+    "id": "062-langchain-agent",
+    "filename": "062-langchain-agent.md"
   }
 ]

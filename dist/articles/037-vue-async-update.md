@@ -1,10 +1,10 @@
 ---
 title: Vue2.0源码解读-异步更新原理
 excerpt: 深入解析Vue2.0异步更新原理
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 25
-tags: JavaScript, 底层系列, Vue
+tags: JavaScript, 底层系列, Vue2
 ---
 
 ## 前言

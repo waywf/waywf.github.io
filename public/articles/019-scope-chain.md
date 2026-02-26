@@ -1,7 +1,7 @@
 ---
 title: JavaScript深入之作用域链
 excerpt: 深入解析JavaScript的作用域链
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 16
 tags: JavaScript, 底层系列

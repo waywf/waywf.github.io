@@ -1,33 +1,33 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-[#0F1419]">
+  <div class="min-h-screen flex flex-col bg-background">
     <Navigation />
 
     <!-- Header Section -->
-    <section class="py-12 md:py-16 border-b border-[#2D3447]">
+    <section class="py-12 md:py-16 border-b border-border">
       <div class="container">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">
-          <span class="text-[#00FF41]">{'$ ls '}</span>
+          <span class="text-primary">{'$ ls '}</span>
           <span>articles/</span>
         </h1>
-        <p class="text-[#A0A0A0] text-lg">
+        <p class="text-muted-foreground text-lg">
           探索我的所有文章和想法。使用搜索和分类来找到你感兴趣的内容。
         </p>
       </div>
     </section>
 
     <!-- Search and Filter Section -->
-    <section class="py-6 md:py-8 border-b border-[#2D3447]">
+    <section class="py-6 md:py-8 border-b border-border">
       <div class="container px-4 md:px-0">
         <!-- Search Bar -->
         <div class="mb-6 md:mb-8">
           <div class="relative">
-            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#A0A0A0] w-5 h-5" fill="none"
+            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input v-model="searchQuery" type="text" placeholder="搜索文章..."
-              class="w-full pl-12 pr-4 py-3 bg-[#1A1F2E] border-2 border-[#2D3447] rounded text-[#E0E0E0] placeholder-[#A0A0A0] focus:border-[#00FF41] focus:outline-none transition-colors" />
+              class="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none transition-colors" />
           </div>
         </div>
 
@@ -37,29 +37,33 @@
             @click="selectedCategory = category" :class="[
               'px-3 py-2 md:px-4 md:py-2 rounded font-bold transition-all text-sm md:text-base',
               selectedCategory === category
-                ? 'bg-[#00FF41] text-[#0F1419] shadow-lg shadow-[#00FF41]/50'
-                : 'border-2 border-[#2D3447] text-[#E0E0E0] hover:border-[#00FF41]'
+                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/50'
+                : 'border-2 border-border text-foreground hover:border-primary'
             ]">
             {{ category }}
           </button>
         </div>
 
         <!-- Tags Filter -->
-        <div class="relative">
+        <div class="flex gap-2">
           <div
-            :class="['flex flex-wrap gap-2 transition-all duration-300', showAllTags ? 'max-h-none' : 'max-h-[5rem] overflow-hidden']">
+            :class="['flex flex-wrap gap-2 transition-all duration-300 flex-1 relative', showAllTags ? 'max-h-none' : 'max-h-[5rem] overflow-hidden']">
             <button v-for="tag in ['全部标签', ...filteredTags]" :key="tag" @click="selectedTag = tag" :class="[
               'px-3 py-1 rounded text-xs md:text-sm transition-all',
               selectedTag === tag
-                ? 'bg-[#FF006E] text-[#FFFFFF] shadow-lg shadow-[#FF006E]/50'
-                : 'border border-[#2D3447] text-[#A0A0A0] hover:border-[#FF006E]'
+                ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/50'
+                : 'border border-border text-muted-foreground hover:border-accent'
             ]">
               {{ tag }}
             </button>
+            <!-- 省略号指示器 -->
+            <div v-if="!showAllTags && filteredTags.length > 8"
+              class="absolute bottom-0 right-0 left-0 h-8 bg-gradient-to-t from-background to-transparent pointer-events-none">
+            </div>
           </div>
           <button v-if="filteredTags.length > 8" @click="showAllTags = !showAllTags"
-            class="absolute bottom-0 right-0 p-2 bg-[#1A1F2E] rounded-full hover:bg-[#2D3447] transition-colors">
-            <svg :class="['w-4 h-4 text-[#FF006E] transition-transform duration-300', showAllTags ? 'rotate-180' : '']"
+            class="p-2 bg-card rounded-full hover:bg-muted transition-colors flex-shrink-0 self-start shadow-lg shadow-accent/30">
+            <svg :class="['w-4 h-4 text-accent transition-transform duration-300', showAllTags ? 'rotate-180' : '']"
               fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
@@ -73,31 +77,31 @@
       <div class="container px-4 md:px-0">
         <div v-if="filteredArticles.length > 0" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <RouterLink v-for="article in displayedArticles" :key="article.id" :to="`/article/${article.id}`"
-            class="group p-6 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 hover:border-[#00FF41] transition-all hover:shadow-lg hover:shadow-[#00FF41]/20">
-            <!-- <div class="absolute inset-0 bg-[#1A1F2E]/70 rounded"></div> -->
+            class="group p-6 border-2 border-border rounded bg-card/50 hover:border-primary transition-all hover:shadow-lg hover:shadow-primary/20">
+            <!-- <div class="absolute inset-0 bg-card/70 rounded"></div> -->
             <div class="relative z-10">
               <div class="flex justify-between items-start mb-3">
-                <span class="text-xs px-3 py-1 bg-[#00FF41]/20 text-[#00FF41] rounded font-bold">
+                <span class="text-xs px-3 py-1 bg-primary/20 text-primary rounded font-bold">
                   {{ article.category }}
                 </span>
-                <span class="text-xs text-[#A0A0A0]">{{ article.readTime }} min read</span>
+                <span class="text-xs text-muted-foreground">{{ article.readTime }} min read</span>
               </div>
 
-              <h3 class="text-lg md:text-xl font-bold mb-3 text-[#E0E0E0] group-hover:text-[#00FF41] transition-colors">
+              <h3 class="text-lg md:text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
                 {{ article.title }}
               </h3>
 
-              <p class="text-[#A0A0A0] text-sm mb-4 truncate min-h-[1.25rem]">
+              <p class="text-muted-foreground text-sm mb-4 truncate min-h-[1.25rem]">
                 {{ article.excerpt }}
               </p>
 
               <div class="flex items-center justify-between">
                 <div class="flex flex-wrap gap-2">
-                  <span v-for="tag in article.tags" :key="tag" class="text-xs text-[#FF006E]">
+                  <span v-for="tag in article.tags" :key="tag" class="text-xs text-accent">
                     #{{ tag }}
                   </span>
                 </div>
-                <span class="text-xs text-[#A0A0A0]">{{ formatDate(article.date) }}</span>
+                <span class="text-xs text-muted-foreground">{{ formatDate(article.date) }}</span>
               </div>
             </div>
           </RouterLink>
@@ -107,28 +111,28 @@
         <div v-if="displayedArticles.length > 0 && displayedArticles.length < filteredArticles.length"
           class="mt-12 text-center">
           <button @click="loadMore" :disabled="isLoading"
-            class="px-6 py-3 border-2 border-[#00FF41] text-[#00FF41] rounded font-bold hover:bg-[#00FF41]/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+            class="px-6 py-3 border-2 border-primary text-primary rounded font-bold hover:bg-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
             {{ isLoading ? '加载中...' : '加载更多文章' }}
           </button>
         </div>
 
         <div v-else class="text-center py-12">
-          <p class="text-[#A0A0A0] text-lg mb-4">
-            <span class="text-[#FF006E]">{'>> '}</span>
+          <p class="text-muted-foreground text-lg mb-4">
+            <span class="text-accent">{'>> '}</span>
             未找到更多的文章
           </p>
           <button @click="resetFilters"
-            class="px-4 py-2 border-2 border-[#00FF41] text-[#00FF41] rounded hover:bg-[#00FF41]/10 transition-all">
+            class="px-4 py-2 border-2 border-primary text-primary rounded hover:bg-primary/10 transition-all">
             重置筛选
           </button>
         </div>
 
         <!-- Results Count -->
-        <div class="mt-8 text-center text-[#A0A0A0]">
+        <div class="mt-8 text-center text-muted-foreground">
           <p>
-            <span class="text-[#00FF41]">{'{'}</span>
+            <span class="text-primary">{'{'}</span>
             <span> 总计找到 {{ filteredArticles.length }} 篇文章 </span>
-            <span class="text-[#FF006E]">{'}'}</span>
+            <span class="text-accent">{'}'}</span>
           </p>
         </div>
       </div>
@@ -139,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import Navigation from '../components/Navigation.vue'
 import Footer from '../components/Footer.vue'

@@ -1,14 +1,14 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-[#0F1419]">
+  <div class="min-h-screen flex flex-col bg-[var(--background)]">
     <Navigation />
 
     <!-- Header Section -->
-    <section class="py-12 md:py-16 border-b border-[#2D3447]">
+    <section class="py-12 md:py-16 border-b border-[var(--border)]">
       <div class="container">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">
           <span class="text-[#00FF41]">{'$ publish'}</span>
         </h1>
-        <p class="text-[#A0A0A0] text-lg">
+        <p class="text-[var(--muted-foreground)] text-lg">
           创建和发布新的 Markdown 文章。
         </p>
       </div>
@@ -26,7 +26,7 @@
                 v-model="form.title"
                 type="text"
                 placeholder="输入文章标题..."
-                class="w-full px-4 py-3 bg-[#1A1F2E] border-2 border-[#2D3447] rounded text-[#E0E0E0] placeholder-[#A0A0A0] focus:border-[#00FF41] focus:outline-none transition-colors"
+                class="w-full px-4 py-3 bg-[var(--card)] border-2 border-[var(--border)] rounded text-[var(--foreground)] placeholder-[var(--muted-foreground)] focus:border-[#00FF41] focus:outline-none transition-colors"
               />
             </div>
 
@@ -36,7 +36,7 @@
                 v-model="form.excerpt"
                 placeholder="输入文章摘要..."
                 rows="3"
-                class="w-full px-4 py-3 bg-[#1A1F2E] border-2 border-[#2D3447] rounded text-[#E0E0E0] placeholder-[#A0A0A0] focus:border-[#00FF41] focus:outline-none transition-colors resize-none"
+                class="w-full px-4 py-3 bg-[var(--card)] border-2 border-[var(--border)] rounded text-[var(--foreground)] placeholder-[var(--muted-foreground)] focus:border-[#00FF41] focus:outline-none transition-colors resize-none"
               ></textarea>
             </div>
 
@@ -45,7 +45,7 @@
                 <label class="block text-[#00FF41] font-bold mb-2">分类</label>
                 <select
                   v-model="form.category"
-                  class="w-full px-4 py-3 bg-[#1A1F2E] border-2 border-[#2D3447] rounded text-[#E0E0E0] focus:border-[#00FF41] focus:outline-none transition-colors"
+                  class="w-full px-4 py-3 bg-[var(--card)] border-2 border-[var(--border)] rounded text-[var(--foreground)] focus:border-[#00FF41] focus:outline-none transition-colors"
                 >
                   <option value="技术">技术</option>
                   <option value="生活">生活</option>
@@ -59,7 +59,7 @@
                   v-model.number="form.readTime"
                   type="number"
                   min="1"
-                  class="w-full px-4 py-3 bg-[#1A1F2E] border-2 border-[#2D3447] rounded text-[#E0E0E0] focus:border-[#00FF41] focus:outline-none transition-colors"
+                  class="w-full px-4 py-3 bg-[var(--card)] border-2 border-[var(--border)] rounded text-[var(--foreground)] focus:border-[#00FF41] focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -70,14 +70,14 @@
                 v-model="form.tagsInput"
                 type="text"
                 placeholder="例如: Vue, TypeScript, 前端"
-                class="w-full px-4 py-3 bg-[#1A1F2E] border-2 border-[#2D3447] rounded text-[#E0E0E0] placeholder-[#A0A0A0] focus:border-[#00FF41] focus:outline-none transition-colors"
+                class="w-full px-4 py-3 bg-[var(--card)] border-2 border-[var(--border)] rounded text-[var(--foreground)] placeholder-[var(--muted-foreground)] focus:border-[#00FF41] focus:outline-none transition-colors"
               />
             </div>
 
             <div class="flex gap-4">
               <button
                 @click="publishArticle"
-                class="flex-1 px-6 py-3 bg-[#00FF41] text-[#0F1419] font-bold rounded hover:shadow-lg hover:shadow-[#00FF41]/50 transition-all"
+                class="flex-1 px-6 py-3 bg-[#00FF41] text-[var(--primary-foreground)] font-bold rounded hover:shadow-lg hover:shadow-[#00FF41]/50 transition-all"
               >
                 发布文章
               </button>
@@ -101,10 +101,10 @@
               v-model="form.content"
               placeholder="输入 Markdown 内容..."
               rows="20"
-              class="w-full px-4 py-3 bg-[#1A1F2E] border-2 border-[#2D3447] rounded text-[#E0E0E0] placeholder-[#A0A0A0] focus:border-[#00FF41] focus:outline-none transition-colors resize-none font-mono text-sm"
+              class="w-full px-4 py-3 bg-[var(--card)] border-2 border-[var(--border)] rounded text-[var(--foreground)] placeholder-[var(--muted-foreground)] focus:border-[#00FF41] focus:outline-none transition-colors resize-none font-mono text-sm"
             ></textarea>
 
-            <div class="mt-4 p-4 border-2 border-[#2D3447] rounded bg-[#1A1F2E]/50 max-h-96 overflow-y-auto">
+            <div class="mt-4 p-4 border-2 border-[var(--border)] rounded bg-[var(--card)]/50 max-h-96 overflow-y-auto">
               <h3 class="text-[#00FF41] font-bold mb-3">预览</h3>
               <div class="prose prose-invert max-w-none text-sm">
                 <Streamdown :content="form.content" />

@@ -43,7 +43,7 @@ pnpm build
 ---
 title: 我的第一篇文章
 date: 2026-02-24
-category: 技术
+category: 前端开发
 tags: Vue, 博客, 静态网站
 excerpt: 这是文章摘要
 ---

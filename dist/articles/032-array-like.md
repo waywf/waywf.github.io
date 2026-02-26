@@ -1,7 +1,7 @@
 ---
 title: JavaScript深入之类数组对象与arguments
 excerpt: 深入解析JavaScript类数组对象与arguments
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 20
 tags: JavaScript, 底层系列
