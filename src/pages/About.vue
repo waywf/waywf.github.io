@@ -4,9 +4,9 @@
 
     <!-- Header Section -->
     <section class="py-12 md:py-16 border-b border-border">
-      <div class="container">
+      <div class="container px-4">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">
-          <span class="text-primary">{'$ whoami'}</span>
+          <span class="text-primary">{'$whoami'}</span>
         </h1>
         <p class="text-muted-foreground text-lg">
           了解更多关于我和这个项目的信息。
@@ -16,7 +16,7 @@
 
     <!-- About Content -->
     <section class="py-12 md:py-16 flex-1">
-      <div class="container max-w-4xl">
+      <div class="container max-w-4xl px-4">
         <!-- Introduction -->
         <div class="mb-12 p-8 border-2 border-border rounded bg-card/50">
           <h2 class="text-2xl font-bold mb-4 text-primary">

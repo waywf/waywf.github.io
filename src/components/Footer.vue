@@ -3,7 +3,7 @@
     <!-- Terminal-style top line -->
     <div class="h-1 bg-gradient-to-r from-primary via-accent to-chart-3"></div>
 
-    <div class="container py-10">
+    <div class="container py-10 px-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- About -->
         <div>

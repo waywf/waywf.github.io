@@ -10,7 +10,7 @@
     }">
       <div class="absolute inset-0 bg-background/70"></div>
       <div class="container relative z-10">
-        <div class="max-w-3xl animate-slide-in-left">
+        <div class="max-w-3xl animate-slide-in-left px-4">
           <div class="mb-6 inline-block">
             <span class="text-primary text-sm font-bold tracking-widest">
               {'>> WELCOME TO MY SPACE <<'} </span>
@@ -45,7 +45,7 @@
 
     <!-- Features Section -->
     <section class="py-16 md:py-24 border-b border-border">
-      <div class="container">
+      <div class="container px-4">
         <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
           <span class="text-primary">{'$ '}</span>
           <span>核心特性</span>
@@ -95,14 +95,13 @@
 
     <!-- Latest Articles Section -->
     <section class="py-16 md:py-24">
-      <div class="container">
+      <div class="container px-4">
         <div class="flex justify-between items-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold">
             <span class="text-primary">{'$ '}</span>
             <span>最新文章</span>
           </h2>
-          <RouterLink to="/articles"
-            class="text-primary hover:text-accent transition-colors flex items-center gap-2">
+          <RouterLink to="/articles" class="text-primary hover:text-accent transition-colors flex items-center gap-2">
             查看全部
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -147,7 +146,7 @@
 
     <!-- CTA Section -->
     <section class="py-16 md:py-24 border-t border-border bg-gradient-to-b from-background to-card">
-      <div class="container text-center">
+      <div class="container text-center px-4">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">
           <span class="text-accent">{'>> '}</span>
           <span>准备好开始了吗？</span>

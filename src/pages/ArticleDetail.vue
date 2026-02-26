@@ -5,7 +5,7 @@
     <div v-if="article" class="flex-1">
       <!-- Article Header -->
       <section class="py-12 md:py-16 border-b border-border">
-        <div class="container max-w-4xl">
+        <div class="container max-w-4xl px-4">
           <RouterLink to="/articles"
             class="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors mb-8">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
 
       <!-- Article Content -->
       <section class="py-12 md:py-16">
-        <div class="container max-w-4xl">
+        <div class="container max-w-4xl px-4">
           <div class="prose prose-invert max-w-none">
             <Streamdown :content="article.content" />
           </div>
@@ -66,7 +66,7 @@
 
       <!-- Navigation -->
       <section class="py-12 md:py-16 border-t border-border">
-        <div class="container max-w-4xl">
+        <div class="container max-w-4xl px-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a v-if="prevArticle" :href="`/article/${prevArticle.id}`"
               class="group p-6 border-2 border-border rounded bg-card/50 hover:border-primary transition-all">

@@ -1,6 +1,6 @@
 <template>
   <nav class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm dark:scan-lines">
-    <div class="container flex items-center justify-between h-16">
+    <div class="container flex items-center justify-between h-16 px-4">
       <!-- Logo -->
       <RouterLink to="/"
         class="flex items-center gap-2 text-xl font-bold dark:neon-glow hover:text-accent transition-colors">
@@ -64,20 +64,22 @@
     </div>
 
     <!-- Mobile Navigation -->
-    <div v-if="isOpen" class="md:hidden border-t border-border bg-background">
-      <div class="container py-4 flex flex-col gap-4">
-        <RouterLink to="/" class="text-foreground hover:text-primary transition-colors" @click="isOpen = false">
-          首页
-        </RouterLink>
-        <RouterLink to="/articles" class="text-foreground hover:text-primary transition-colors" @click="isOpen = false">
-          文章
-        </RouterLink>
-        <RouterLink to="/about" class="text-foreground hover:text-primary transition-colors" @click="isOpen = false">
-          关于
-        </RouterLink>
-
+    <Transition name="slide-down">
+      <div v-if="isOpen" class="md:hidden border-t border-border bg-background overflow-hidden">
+        <div class="container py-4 flex flex-col gap-4 px-4">
+          <RouterLink to="/" class="text-foreground hover:text-primary transition-colors" @click="isOpen = false">
+            首页
+          </RouterLink>
+          <RouterLink to="/articles" class="text-foreground hover:text-primary transition-colors"
+            @click="isOpen = false">
+            文章
+          </RouterLink>
+          <RouterLink to="/about" class="text-foreground hover:text-primary transition-colors" @click="isOpen = false">
+            关于
+          </RouterLink>
+        </div>
       </div>
-    </div>
+    </Transition>
   </nav>
 </template>
 
@@ -90,4 +92,21 @@ const isOpen = ref(false)
 const { currentTheme, toggleTheme } = useTheme()
 </script>
 
-<style scoped></style>
+<style scoped>
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+.slide-down-enter-to,
+.slide-down-leave-from {
+  max-height: 500px;
+  opacity: 1;
+}
+</style>
