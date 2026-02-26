@@ -1,6 +1,7 @@
 ---
 title: Python AI后端开发：从基础到实战
 category: 后端开发
+excerpt: 在人工智能时代，Python已经成为AI开发的主流语言。本文将从基础概念、核心技术、实战案例等方面，全面介绍Python AI后端开发的相关知识。
 tags: Python, AI后端, 机器学习
 date: 2026-02-26
 ---

@@ -1,6 +1,7 @@
 ---
 title: Python AI安全：从风险到防护
 category: 后端开发
+excerpt: 随着AI技术的快速发展，AI安全问题日益凸显。本文将从AI安全的风险、防护措施、实战案例等方面，全面介绍Python AI安全的相关知识。
 tags: Python, AI安全, 机器学习
 date: 2026-02-26
 ---

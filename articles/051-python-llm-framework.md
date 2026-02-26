@@ -1,6 +1,7 @@
 ---
 title: 2026爆火3大LLM开发Python框架!CrewAI/DeerFlow/Trae Agent
 category: 后端开发
+excerpt: LLM开发早已不是小众赛道，2026年CrewAI、DeerFlow、Trae Agent三大框架异军突起，成为LLM开发的主流选择。
 tags: Python, LLM, AI框架
 date: 2026-02-26
 ---

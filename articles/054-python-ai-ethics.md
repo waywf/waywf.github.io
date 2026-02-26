@@ -1,6 +1,7 @@
 ---
 title: Python AI伦理：从理论到实践
 category: 后端开发
+excerpt: 随着AI技术的快速发展，AI伦理问题日益凸显。本文将从AI伦理的理论、实践、挑战等方面，全面介绍Python AI伦理的相关知识。
 tags: Python, AI伦理, 机器学习
 date: 2026-02-26
 ---
