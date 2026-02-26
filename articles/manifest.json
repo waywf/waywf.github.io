@@ -230,5 +230,9 @@
   {
     "id": "060-openclaw-local",
     "filename": "060-openclaw-local.md"
+  },
+  {
+    "id": "061-aigc-workflow",
+    "filename": "061-aigc-workflow.md"
   }
 ]
