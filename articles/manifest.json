@@ -230,5 +230,9 @@
   {
     "id": "058-javascript-algorithms",
     "filename": "058-javascript-algorithms.md"
+  },
+  {
+    "id": "059-design-patterns",
+    "filename": "059-design-patterns.md"
   }
 ]
