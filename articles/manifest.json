@@ -1,13 +1,5 @@
 [
   {
-    "id": "001-vue3-intro",
-    "filename": "001-vue3-intro.md"
-  },
-  {
-    "id": "002-tailwind-css",
-    "filename": "002-tailwind-css.md"
-  },
-  {
     "id": "003-life-thoughts",
     "filename": "003-life-thoughts.md"
   },
@@ -234,5 +226,9 @@
   {
     "id": "059-design-patterns",
     "filename": "059-design-patterns.md"
+  },
+  {
+    "id": "060-openclaw-local",
+    "filename": "060-openclaw-local.md"
   }
 ]
