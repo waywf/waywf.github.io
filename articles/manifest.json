@@ -226,5 +226,9 @@
   {
     "id": "057-algorithm-complexity",
     "filename": "057-algorithm-complexity.md"
+  },
+  {
+    "id": "058-javascript-algorithms",
+    "filename": "058-javascript-algorithms.md"
   }
 ]
