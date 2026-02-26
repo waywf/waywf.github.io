@@ -1,7 +1,7 @@
 ---
 title: JavaScript深入之变量对象
 excerpt: 深入解析JavaScript的变量对象
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 18
 tags: JavaScript, 底层系列

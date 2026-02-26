@@ -1,7 +1,7 @@
 ---
 title: 一道js面试题引发的思考
 excerpt: 深入解析一道js面试题
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 30
 tags: JavaScript, 底层系列

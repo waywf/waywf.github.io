@@ -1,7 +1,7 @@
 ---
 title: 深入JavaScript系列-setTimeout与循环闭包面试题详解
 excerpt: 深入解析setTimeout与循环闭包的面试题
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 15
 tags: JavaScript, 底层系列

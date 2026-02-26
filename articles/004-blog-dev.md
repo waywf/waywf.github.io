@@ -1,7 +1,7 @@
 ---
 title: 博客系统开发实战 - 从设计到部署
 excerpt: 记录使用 Vue 3 + Vite + Tailwind CSS 开发个人博客系统的完整过程，包括技术选型、架构设计和部署上线。
-category: 技术
+category: 前端开发
 date: 2026-02-24
 # readTime: 12
 tags: Vue3, Vite, Tailwind, 部署

@@ -194,5 +194,25 @@
   {
     "id": "049-ai-future",
     "filename": "049-ai-future.md"
+  },
+  {
+    "id": "050-python-ai-backend",
+    "filename": "050-python-ai-backend.md"
+  },
+  {
+    "id": "051-python-llm-framework",
+    "filename": "051-python-llm-framework.md"
+  },
+  {
+    "id": "052-python-multi-agent",
+    "filename": "052-python-multi-agent.md"
+  },
+  {
+    "id": "053-python-ai-security",
+    "filename": "053-python-ai-security.md"
+  },
+  {
+    "id": "054-python-ai-ethics",
+    "filename": "054-python-ai-ethics.md"
   }
 ]

@@ -1,10 +1,10 @@
 ---
 title: Vue2.0源码解读-组件原理
 excerpt: 深入解析Vue2.0组件原理
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 30
-tags: JavaScript, 底层系列, Vue
+tags: JavaScript, 底层系列, Vue2
 ---
 
 ## 前言

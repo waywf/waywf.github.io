@@ -1,7 +1,7 @@
 ---
 title: JavaScript深入之继承的多种方式和优缺点
 excerpt: 深入解析JavaScript继承的多种方式和优缺点
-category: 技术
+category: 前端开发
 date: 2026-02-25
 readTime: 25
 tags: JavaScript, 底层系列
