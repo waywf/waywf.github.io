@@ -12,6 +12,12 @@ export default defineConfig({
   },
   root: import.meta.dirname,
   build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(import.meta.dirname, "index.html"),
+        404: path.resolve(import.meta.dirname, "404.html"),
+      },
+    },
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
   },
