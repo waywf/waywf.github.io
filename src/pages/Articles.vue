@@ -108,7 +108,7 @@
         </div>
 
         <!-- Load More Button -->
-        <div v-if="displayedArticles.length > 0 && displayedArticles.length < filteredArticles.length"
+        <div v-if="displayedArticles.length > 0 && displayedArticles.length < totalArticleCount"
           class="mt-12 text-center">
           <button @click="loadMore" :disabled="isLoading"
             class="px-6 py-3 border-2 border-primary text-primary rounded font-bold hover:bg-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
@@ -116,7 +116,7 @@
           </button>
         </div>
 
-        <div v-else class="text-center py-12">
+        <div v-else-if="displayedArticles.length === 0" class="text-center py-12">
           <p class="text-muted-foreground text-lg mb-4">
             <span class="text-accent">{'>> '}</span>
             未找到更多的文章
@@ -131,7 +131,7 @@
         <div class="mt-8 text-center text-muted-foreground">
           <p>
             <span class="text-primary">{'{'}</span>
-            <span> 总计找到 {{ filteredArticles.length }} 篇文章 </span>
+            <span> 总计 {{ totalArticleCount }} 篇文章，已加载 {{ displayedArticles.length }} 篇 </span>
             <span class="text-accent">{'}'}</span>
           </p>
         </div>
@@ -147,7 +147,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import Navigation from '../components/Navigation.vue'
 import Footer from '../components/Footer.vue'
-import { loadAllArticles, getCategories, getAllTags, filterArticlesByCategory, searchArticles, type Article } from '../lib/articles-loader'
+import { loadArticlesByPage, loadAllArticlesMetadata, getTotalArticleCount, filterArticlesByCategory, searchArticles, type Article } from '../lib/articles-loader'
 
 // 使用sessionStorage保存筛选条件和分页信息
 const getInitialValue = (key: string, defaultValue: string) => {
@@ -175,6 +175,7 @@ const articles = ref<Article[]>([])
 const displayedArticles = ref<Article[]>([])
 const availableCategories = ref<string[]>([])
 const availableTags = ref<string[]>([])
+const totalArticleCount = ref(0)
 const filteredTags = computed(() => {
   if (selectedCategory.value === '全部') {
     return availableTags.value
@@ -189,11 +190,18 @@ const filteredTags = computed(() => {
 const articlesPerPage = ref(10)
 
 onMounted(async () => {
-  const loadedArticles = await loadAllArticles()
-  articles.value = loadedArticles
-  availableCategories.value = getCategories(loadedArticles)
-  availableTags.value = getAllTags(loadedArticles)
-  updateDisplayedArticles()
+  // 加载元数据（分类和标签）
+  const metadata = await loadAllArticlesMetadata()
+  availableCategories.value = metadata.categories
+  availableTags.value = metadata.tags
+
+  // 获取文章总数
+  totalArticleCount.value = await getTotalArticleCount()
+
+  // 加载第一页文章
+  const firstPageArticles = await loadArticlesByPage(currentPage.value, articlesPerPage.value)
+  articles.value = firstPageArticles
+  displayedArticles.value = firstPageArticles
 })
 
 const filteredArticles = computed(() => {
@@ -218,7 +226,7 @@ const filteredArticles = computed(() => {
 })
 
 // 监听过滤条件变化，重置分页并保存到sessionStorage
-watch([selectedCategory, selectedTag, searchQuery], () => {
+watch([selectedCategory, selectedTag, searchQuery], async () => {
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem('selectedCategory', selectedCategory.value)
     sessionStorage.setItem('selectedTag', selectedTag.value)
@@ -226,7 +234,10 @@ watch([selectedCategory, selectedTag, searchQuery], () => {
     sessionStorage.setItem('currentPage', '1')
   }
   currentPage.value = 1
-  updateDisplayedArticles()
+  // 重新加载第一页文章
+  const firstPageArticles = await loadArticlesByPage(currentPage.value, articlesPerPage.value)
+  articles.value = firstPageArticles
+  displayedArticles.value = firstPageArticles
 })
 
 // 监听分类变化，重置标签选择（使用同步刷新避免重复触发过滤监听）
@@ -248,6 +259,14 @@ const resetFilters = () => {
 }
 
 const updateDisplayedArticles = () => {
+  // Adjust current page if it exceeds available articles count
+  const maxPage = Math.ceil(filteredArticles.value.length / articlesPerPage.value)
+  if (currentPage.value > maxPage && maxPage > 0) {
+    currentPage.value = maxPage
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('currentPage', currentPage.value.toString())
+    }
+  }
   // 直接使用filteredArticles.value，避免重复计算
   displayedArticles.value = filteredArticles.value.slice(0, currentPage.value * articlesPerPage.value)
 }
@@ -262,7 +281,10 @@ const loadMore = async () => {
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem('currentPage', currentPage.value.toString())
   }
-  updateDisplayedArticles()
+  // 加载下一页文章
+  const nextPageArticles = await loadArticlesByPage(currentPage.value, articlesPerPage.value)
+  articles.value = [...articles.value, ...nextPageArticles]
+  displayedArticles.value = [...displayedArticles.value, ...nextPageArticles]
   isLoading.value = false
 }
 

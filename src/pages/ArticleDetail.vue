@@ -119,17 +119,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import Navigation from '../components/Navigation.vue'
 import Footer from '../components/Footer.vue'
 import Streamdown from '../components/Streamdown.vue'
-import { loadArticle, loadAllArticles, type Article } from '../lib/articles-loader'
+import { loadArticle, loadNeighborArticles, type Article } from '../lib/articles-loader'
 
 const route = useRoute()
 const article = ref<Article | null>(null)
-const allArticles = ref<Article[]>([])
+const prevArticle = ref<Article | null>(null)
+const nextArticle = ref<Article | null>(null)
 
 onMounted(async () => {
   try {
@@ -139,38 +140,13 @@ onMounted(async () => {
       article.value = loadedArticle
     }
 
-    // 加载所有文章以便导航
-    const articles = await loadAllArticles()
-    allArticles.value = articles
-    console.log('All articles:', articles.length)
-    console.log('Current article:', article.value?.id)
-    console.log('Current index:', currentIndex.value)
+    // 加载相邻文章（上一篇和下一篇）
+    const neighborArticles = await loadNeighborArticles(id)
+    prevArticle.value = neighborArticles.prev
+    nextArticle.value = neighborArticles.next
   } catch (error) {
     console.error('Failed to load article:', error)
   }
-})
-
-const currentIndex = computed(() => {
-  if (!article.value || allArticles.value.length === 0) return -1
-  return allArticles.value.findIndex(a => a.id === article.value.id)
-})
-
-const prevArticle = computed(() => {
-  const index = currentIndex.value
-  console.log('Prev article index:', index)
-  if (index > 0) {
-    return allArticles.value[index - 1]
-  }
-  return null
-})
-
-const nextArticle = computed(() => {
-  const index = currentIndex.value
-  console.log('Next article index:', index)
-  if (index >= 0 && index < allArticles.value.length - 1) {
-    return allArticles.value[index + 1]
-  }
-  return null
 })
 
 const formatDate = (dateStr: string): string => {
