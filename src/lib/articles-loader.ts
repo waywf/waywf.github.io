@@ -83,6 +83,29 @@ export async function loadAllArticles(): Promise<Article[]> {
 }
 
 /**
+ * 加载最新文章（只加载指定数量的文章）
+ */
+export async function loadLatestArticles(count: number): Promise<Article[]> {
+  const filenames = await loadArticlesList()
+  const articles: Article[] = []
+  
+  // 只加载前 count 篇文章
+  const limitedFilenames = filenames.slice(0, count)
+  
+  for (const filename of limitedFilenames) {
+    const article = await loadArticle(filename)
+    if (article) {
+      articles.push(article)
+    }
+  }
+  
+  // 按日期降序排序
+  articles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  
+  return articles
+}
+
+/**
  * 按分类过滤文章
  */
 export function filterArticlesByCategory(articles: Article[], category: string): Article[] {

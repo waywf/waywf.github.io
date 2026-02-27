@@ -173,13 +173,12 @@ import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import Navigation from '../components/Navigation.vue'
 import Footer from '../components/Footer.vue'
-import { loadAllArticles, type Article } from '../lib/articles-loader'
+import { loadLatestArticles, type Article } from '../lib/articles-loader'
 
 const latestArticles = ref<Article[]>([])
 
 onMounted(async () => {
-  const articles = await loadAllArticles()
-  latestArticles.value = articles.slice(0, 3)
+  latestArticles.value = await loadLatestArticles(3)
 })
 </script>
 
