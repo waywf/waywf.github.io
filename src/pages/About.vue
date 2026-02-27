@@ -4,7 +4,7 @@
 
     <!-- Header Section -->
     <section class="py-12 md:py-16 border-b border-border">
-      <div class="container px-4">
+      <div class="container px-4 max-w-4xl">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">
           <span class="text-primary">{'$whoami'}</span>
         </h1>
@@ -74,9 +74,9 @@
                   <h3 class="text-lg font-bold text-foreground mb-1">{{ project.name }}</h3>
                   <p class="text-sm text-muted-foreground">{{ project.role }} | {{ project.period }}</p>
                 </div>
-                <div class="flex gap-2">
+                <div class="flex flex-wrap gap-2 justify-end">
                   <div v-for="tag in project.tags" :key="tag"
-                    class="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                    class="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary whitespace-nowrap">
                     {{ tag }}
                   </div>
                 </div>
