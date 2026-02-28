@@ -75,7 +75,7 @@
     <!-- Articles Grid -->
     <section class="py-8 md:py-12 flex-1">
       <div class="container px-4 md:px-0">
-        <div v-if="filteredArticles.length > 0" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div v-if="displayedArticles.length > 0" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <RouterLink v-for="article in displayedArticles" :key="article.id" :to="`/article/${article.id}`"
             class="group p-6 border-2 border-border rounded bg-card/50 hover:border-primary transition-all hover:shadow-lg hover:shadow-primary/20">
             <!-- <div class="absolute inset-0 bg-card/70 rounded"></div> -->
@@ -108,7 +108,7 @@
         </div>
 
         <!-- Load More Button -->
-        <div v-if="displayedArticles.length > 0 && displayedArticles.length < totalArticleCount"
+        <div v-if="displayedArticles.length > 0 && displayedArticles.length < totalFilteredCount"
           class="mt-12 text-center">
           <button @click="loadMore" :disabled="isLoading"
             class="px-6 py-3 border-2 border-primary text-primary rounded font-bold hover:bg-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
@@ -131,7 +131,7 @@
         <div class="mt-8 text-center text-muted-foreground">
           <p>
             <span class="text-primary">{'{'}</span>
-            <span> 总计 {{ totalArticleCount }} 篇文章，已加载 {{ displayedArticles.length }} 篇 </span>
+            <span> 总计找到 {{ totalFilteredCount }} 篇文章 </span>
             <span class="text-accent">{'}'}</span>
           </p>
         </div>
@@ -147,7 +147,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import Navigation from '../components/Navigation.vue'
 import Footer from '../components/Footer.vue'
-import { loadArticlesByPage, loadAllArticlesMetadata, getTotalArticleCount, filterArticlesByCategory, searchArticles, type Article } from '../lib/articles-loader'
+import { loadArticlesByIds, loadAllArticlesMetadata, getArticleIdsByCategory, getArticleIdsByTag, loadManifest, type Article, type ManifestItem } from '../lib/articles-loader'
 
 // 使用sessionStorage保存筛选条件和分页信息
 const getInitialValue = (key: string, defaultValue: string) => {
@@ -171,61 +171,80 @@ const selectedTag = ref(getInitialValue('selectedTag', '全部标签'))
 const searchQuery = ref(getInitialValue('searchQuery', ''))
 const currentPage = ref(getInitialNumber('currentPage', 1))
 const showAllTags = ref(false)
-const articles = ref<Article[]>([])
 const displayedArticles = ref<Article[]>([])
 const availableCategories = ref<string[]>([])
 const availableTags = ref<string[]>([])
-const totalArticleCount = ref(0)
+const manifest = ref<ManifestItem[]>([])
+const articlesPerPage = ref(10)
+
+// 根据manifest和筛选条件获取文章ID列表
+const getFilteredArticleIds = (): string[] => {
+  let result = manifest.value
+
+  // 按分类过滤
+  if (selectedCategory.value !== '全部') {
+    result = result.filter(item => item.category === selectedCategory.value)
+  }
+
+  // 按标签过滤
+  if (selectedTag.value !== '全部标签') {
+    result = result.filter(item => item.tags && item.tags.includes(selectedTag.value))
+  }
+
+  // 按搜索词过滤（搜索标题）
+  if (searchQuery.value) {
+    const lowerQuery = searchQuery.value.toLowerCase()
+    result = result.filter(item =>
+      item.id.toLowerCase().includes(lowerQuery) ||
+      item.filename.toLowerCase().includes(lowerQuery)
+    )
+  }
+
+  return result.map(item => item.id)
+}
+
+// 计算筛选后的文章总数
+const totalFilteredCount = computed(() => {
+  return getFilteredArticleIds().length
+})
+
 const filteredTags = computed(() => {
   if (selectedCategory.value === '全部') {
     return availableTags.value
   }
-  const categoryArticles = articles.value.filter(article => article.category === selectedCategory.value)
+  // 从manifest中筛选当前分类下的标签
+  const categoryItems = manifest.value.filter(item => item.category === selectedCategory.value)
   const tags = new Set<string>()
-  categoryArticles.forEach(article => {
-    article.tags.forEach(tag => tags.add(tag))
+  categoryItems.forEach(item => {
+    if (item.tags) {
+      item.tags.forEach(tag => tags.add(tag))
+    }
   })
   return Array.from(tags).sort()
 })
-const articlesPerPage = ref(10)
 
 onMounted(async () => {
+  // 加载manifest
+  manifest.value = await loadManifest()
+
   // 加载元数据（分类和标签）
   const metadata = await loadAllArticlesMetadata()
   availableCategories.value = metadata.categories
   availableTags.value = metadata.tags
 
-  // 获取文章总数
-  totalArticleCount.value = await getTotalArticleCount()
-
   // 加载第一页文章
-  const firstPageArticles = await loadArticlesByPage(currentPage.value, articlesPerPage.value)
-  articles.value = firstPageArticles
-  displayedArticles.value = firstPageArticles
+  await loadArticles()
 })
 
-const filteredArticles = computed(() => {
-  let result = articles.value
+// 加载文章（根据当前筛选条件和页码）
+const loadArticles = async () => {
+  const ids = getFilteredArticleIds()
+  const pageIds = ids.slice(0, currentPage.value * articlesPerPage.value)
+  const articles = await loadArticlesByIds(pageIds)
+  displayedArticles.value = articles
+}
 
-  // 按分类过滤
-  if (selectedCategory.value !== '全部') {
-    result = filterArticlesByCategory(result, selectedCategory.value)
-  }
-
-  // 按标签过滤
-  if (selectedTag.value !== '全部标签') {
-    result = result.filter(article => article.tags.includes(selectedTag.value))
-  }
-
-  // 按搜索词过滤
-  if (searchQuery.value) {
-    result = searchArticles(result, searchQuery.value)
-  }
-
-  return result
-})
-
-// 监听过滤条件变化，重置分页并保存到sessionStorage
+// 监听过滤条件变化，重置分页并重新加载
 watch([selectedCategory, selectedTag, searchQuery], async () => {
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem('selectedCategory', selectedCategory.value)
@@ -234,10 +253,7 @@ watch([selectedCategory, selectedTag, searchQuery], async () => {
     sessionStorage.setItem('currentPage', '1')
   }
   currentPage.value = 1
-  // 重新加载第一页文章
-  const firstPageArticles = await loadArticlesByPage(currentPage.value, articlesPerPage.value)
-  articles.value = firstPageArticles
-  displayedArticles.value = firstPageArticles
+  await loadArticles()
 })
 
 // 监听分类变化，重置标签选择（使用同步刷新避免重复触发过滤监听）
@@ -245,7 +261,7 @@ watch(selectedCategory, () => {
   selectedTag.value = '全部标签'
 }, { flush: 'sync' })
 
-const resetFilters = () => {
+const resetFilters = async () => {
   selectedCategory.value = '全部'
   selectedTag.value = '全部标签'
   searchQuery.value = ''
@@ -256,19 +272,7 @@ const resetFilters = () => {
     sessionStorage.removeItem('searchQuery')
     sessionStorage.removeItem('currentPage')
   }
-}
-
-const updateDisplayedArticles = () => {
-  // Adjust current page if it exceeds available articles count
-  const maxPage = Math.ceil(filteredArticles.value.length / articlesPerPage.value)
-  if (currentPage.value > maxPage && maxPage > 0) {
-    currentPage.value = maxPage
-    if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.setItem('currentPage', currentPage.value.toString())
-    }
-  }
-  // 直接使用filteredArticles.value，避免重复计算
-  displayedArticles.value = filteredArticles.value.slice(0, currentPage.value * articlesPerPage.value)
+  await loadArticles()
 }
 
 const isLoading = ref(false)
@@ -281,10 +285,11 @@ const loadMore = async () => {
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem('currentPage', currentPage.value.toString())
   }
-  // 加载下一页文章
-  const nextPageArticles = await loadArticlesByPage(currentPage.value, articlesPerPage.value)
-  articles.value = [...articles.value, ...nextPageArticles]
-  displayedArticles.value = [...displayedArticles.value, ...nextPageArticles]
+  // 加载更多文章
+  const ids = getFilteredArticleIds()
+  const pageIds = ids.slice((currentPage.value - 1) * articlesPerPage.value, currentPage.value * articlesPerPage.value)
+  const newArticles = await loadArticlesByIds(pageIds)
+  displayedArticles.value = [...displayedArticles.value, ...newArticles]
   isLoading.value = false
 }
 

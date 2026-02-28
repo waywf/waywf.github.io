@@ -22,6 +22,7 @@ export interface ManifestItem {
   filename: string;
   category: string;
   tags: string[];
+  date: string;
 }
 
 /**
@@ -44,7 +45,7 @@ export async function loadArticlesList(): Promise<string[]> {
 }
 
 /**
- * 从 manifest.json 加载完整的元数据
+ * 从 manifest.json 加载完整的文章元数据
  */
 export async function loadManifest(): Promise<ManifestItem[]> {
   try {
@@ -52,21 +53,13 @@ export async function loadManifest(): Promise<ManifestItem[]> {
     if (!response.ok) throw new Error("Failed to load manifest");
     const data = await response.json();
     if (Array.isArray(data)) {
-      return data as ManifestItem[];
+      return data;
     }
     return [];
   } catch (error) {
     console.error("Failed to load articles manifest:", error);
     return [];
   }
-}
-
-/**
- * 获取文章总数
- */
-export async function getTotalArticleCount(): Promise<number> {
-  const manifest = await loadManifest();
-  return manifest.length;
 }
 
 /**
@@ -123,25 +116,27 @@ export async function loadAllArticles(): Promise<Article[]> {
 
 /**
  * 加载最新文章（只加载指定数量的文章）
+ * 使用manifest中的date字段排序，再通过id加载文章
  */
 export async function loadLatestArticles(count: number): Promise<Article[]> {
-  const filenames = await loadArticlesList();
+  const manifest = await loadManifest();
+
+  // 按date降序排序
+  const sortedManifest = [...manifest].sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
+  // 取前count个
+  const topItems = sortedManifest.slice(0, count);
+
+  // 通过id加载文章
   const articles: Article[] = [];
-
-  // 只加载前 count 篇文章
-  const limitedFilenames = filenames.slice(0, count);
-
-  for (const filename of limitedFilenames) {
-    const article = await loadArticle(filename);
+  for (const item of topItems) {
+    const article = await loadArticle(item.filename);
     if (article) {
       articles.push(article);
     }
   }
-
-  // 按日期降序排序
-  articles.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
 
   return articles;
 }
@@ -200,7 +195,8 @@ export async function loadArticlesByPage(
 }
 
 /**
- * 从 manifest 加载元数据（用于分类和标签过滤）
+ * 加载所有文章的元数据（用于分类和标签过滤）
+ * 直接从manifest读取，无需加载完整文章内容
  */
 export async function loadAllArticlesMetadata(): Promise<{
   categories: string[];
@@ -211,14 +207,58 @@ export async function loadAllArticlesMetadata(): Promise<{
   const tags = new Set<string>();
 
   manifest.forEach(item => {
-    categories.add(item.category);
-    item.tags.forEach(tag => tags.add(tag));
+    if (item.category) {
+      categories.add(item.category);
+    }
+    if (item.tags && Array.isArray(item.tags)) {
+      item.tags.forEach(tag => tags.add(tag));
+    }
   });
 
   return {
     categories: Array.from(categories).sort(),
     tags: Array.from(tags).sort(),
   };
+}
+
+/**
+ * 根据分类从manifest获取文章ID列表
+ */
+export async function getArticleIdsByCategory(
+  category: string
+): Promise<string[]> {
+  const manifest = await loadManifest();
+  return manifest
+    .filter(item => item.category === category)
+    .map(item => item.id);
+}
+
+/**
+ * 根据标签从manifest获取文章ID列表
+ */
+export async function getArticleIdsByTag(tag: string): Promise<string[]> {
+  const manifest = await loadManifest();
+  return manifest
+    .filter(item => item.tags && item.tags.includes(tag))
+    .map(item => item.id);
+}
+
+/**
+ * 根据ID列表加载文章
+ */
+export async function loadArticlesByIds(ids: string[]): Promise<Article[]> {
+  const articles: Article[] = [];
+  for (const id of ids) {
+    const article = await loadArticle(`${id}.md`);
+    if (article) {
+      articles.push(article);
+    }
+  }
+  // 按日期降序排序
+  articles.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  return articles;
 }
 
 /**
