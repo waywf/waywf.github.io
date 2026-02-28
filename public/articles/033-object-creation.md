@@ -2,7 +2,7 @@
 title: JavaScript深入之创建对象的多种方式以及优缺点
 excerpt: 深入解析JavaScript创建对象的多种方式以及优缺点
 category: 前端开发
-date: 2026-02-25
+date: 2021-06-22
 readTime: 25
 tags: JavaScript, 底层系列
 ---

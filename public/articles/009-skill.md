@@ -2,7 +2,7 @@
 title: 什么是skill，skill的应用，skill与prompt的区别。好用的skill github项目
 excerpt: 深入了解AI Skill的定义、应用和与prompt的区别
 category: AI
-date: 2026-02-25
+date: 2025-08-28
 readTime: 16
 tags: Skill, Prompt
 ---

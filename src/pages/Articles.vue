@@ -174,7 +174,7 @@ const availableTags = ref<string[]>([])
 const manifest = ref<ManifestItem[]>([])
 const articlesPerPage = ref(10)
 
-// 根据manifest和筛选条件获取文章ID列表
+// 根据manifest和筛选条件获取文章ID列表（按时间倒序排序）
 const getFilteredArticleIds = (): string[] => {
   let result = manifest.value
 
@@ -195,6 +195,13 @@ const getFilteredArticleIds = (): string[] => {
       item.title.toLowerCase().includes(lowerQuery)
     )
   }
+
+  // 按日期倒序排序（最新的文章在前）
+  result = result.sort((a, b) => {
+    const dateA = new Date(a.date).getTime()
+    const dateB = new Date(b.date).getTime()
+    return dateB - dateA
+  })
 
   return result.map(item => item.id)
 }

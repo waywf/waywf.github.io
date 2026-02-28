@@ -2,7 +2,7 @@
 title: JavaScript深入之参数按值传递
 excerpt: 深入解析JavaScript参数按值传递
 category: 前端开发
-date: 2026-02-25
+date: 2021-01-10
 readTime: 15
 tags: JavaScript, 底层系列
 ---

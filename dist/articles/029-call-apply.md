@@ -2,7 +2,7 @@
 title: JavaScript深入之call和apply的模拟实现
 excerpt: 深入解析JavaScript call和apply的模拟实现
 category: 前端开发
-date: 2026-02-25
+date: 2021-02-14
 readTime: 20
 tags: JavaScript, 底层系列
 ---
@@ -301,4 +301,3 @@ call 和 apply 是 JavaScript 中非常重要的方法，它们可以改变函�
 
 希望通过本文的介绍，大家能够理解 call 和 apply 的模拟实现，并在实际开发中灵活运用。
 
-如果你还有其他疑问，欢迎在评论区留言，我会尽量为大家解答。

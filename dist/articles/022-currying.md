@@ -2,7 +2,7 @@
 title: JavaScript专题之函数柯里化
 excerpt: 深入解析JavaScript函数柯里化
 category: 前端开发
-date: 2026-02-25
+date: 2020-10-08
 readTime: 20
 tags: JavaScript, 底层系列
 ---
@@ -259,4 +259,3 @@ add1Multiply2(5) // 12
 
 希望通过本文的介绍，大家能够理解柯里化的概念和用途，并在实际开发中灵活运用。
 
-如果你还有其他疑问，欢迎在评论区留言，我会尽量为大家解答。

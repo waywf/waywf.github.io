@@ -2,7 +2,7 @@
 title: JavaScript深入之执行上下文栈
 excerpt: 深入解析JavaScript的执行上下文栈
 category: 前端开发
-date: 2026-02-25
+date: 2020-05-10
 readTime: 15
 tags: JavaScript, 底层系列
 ---

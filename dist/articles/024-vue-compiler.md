@@ -2,7 +2,7 @@
 title: Vue2.0源码解读-模板编译原理
 excerpt: 深入解析Vue2.0模板编译原理
 category: 前端开发
-date: 2026-02-25
+date: 2021-11-15
 readTime: 30
 tags: JavaScript, 底层系列, Vue2
 ---
@@ -33,7 +33,7 @@ new Vue({
 
 注意一：平常开发中 我们使用的是不带编译版本的 Vue 版本（runtime-only）直接在 options 传入 template 选项 在开发环境报错
 
-注意二：这里传入的 template 选项不要和.vue 文件里面的<template>模板搞混淆了 vue 单文件组件的 template 是需要 vue-loader 进行处理的
+注意二：这里传入的 template 选项不要和.vue 文件里面的template模板搞混淆了 vue 单文件组件的 template 是需要 vue-loader 进行处理的
 
 我们传入的 el 或者 template 选项最后都会被解析成 render 函数 这样才能保持模板解析的一致性
 
@@ -279,4 +279,3 @@ Vue 的模板编译原理主要是将 html 模板解析成 ast 语法树 然后�
 
 希望通过本文的介绍 大家能够理解 Vue 的模板编译原理 并在实际开发中灵活运用
 
-如果你还有其他疑问 欢迎在评论区留言 我会尽量为大家解答

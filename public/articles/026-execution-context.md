@@ -2,7 +2,7 @@
 title: JavaScript深入之执行上下文
 excerpt: 深入解析JavaScript执行上下文
 category: 前端开发
-date: 2026-02-25
+date: 2020-11-15
 readTime: 25
 tags: JavaScript, 底层系列
 ---

@@ -2,7 +2,7 @@
 title: AI安全的底层原理，从技术到防御的全面解析
 excerpt: 深入解析AI安全的底层原理，从技术、攻击、防御等多个角度全面解析
 category: AI
-date: 2026-02-25
+date: 2025-10-08
 readTime: 26
 tags: AI安全, 底层原理, 防御技术
 ---

@@ -67,6 +67,17 @@
       <!-- Navigation -->
       <section class="py-12 md:py-16 border-t border-border">
         <div class="container max-w-4xl px-4">
+          <!-- 返回文章列表按钮 -->
+          <div class="mb-8 text-center">
+            <RouterLink to="/articles"
+              class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary font-bold rounded hover:bg-primary/10 transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              返回文章列表
+            </RouterLink>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a v-if="prevArticle" :href="`/article/${prevArticle.id}`"
               class="group p-6 border-2 border-border rounded bg-card/50 hover:border-primary transition-all">

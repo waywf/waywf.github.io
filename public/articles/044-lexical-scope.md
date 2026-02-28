@@ -2,7 +2,7 @@
 title: JavaScript深入之词法作用域和动态作用域
 excerpt: 深入解析JavaScript词法作用域和动态作用域
 category: 前端开发
-date: 2026-02-25
+date: 2021-09-10
 readTime: 20
 tags: JavaScript, 底层系列
 ---

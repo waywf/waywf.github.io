@@ -3,7 +3,7 @@ title: 本地搭建OpenClaw：国产AI模型的最佳实践
 category: AI
 excerpt: 本文详细介绍了如何在本地搭建OpenClaw，选择国产速度快、质量高、最具性价比的模型，并总结出最佳实践。帮助你快速搭建本地AI服务，享受国产AI模型的优势。
 tags: AI, OpenClaw, 本地搭建, 国产模型
-date: 2026-02-26
+date: 2025-12-02
 ---
 
 ## 引言

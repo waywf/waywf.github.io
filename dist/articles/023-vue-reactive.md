@@ -2,7 +2,7 @@
 title: Vue2.0源码解读-响应式数据原理
 excerpt: 深入解析Vue2.0响应式数据原理
 category: 前端开发
-date: 2026-02-25
+date: 2021-10-20
 readTime: 25
 tags: JavaScript, 底层系列, Vue2
 ---
@@ -244,4 +244,3 @@ Vue 的响应式数据原理主要是通过 Object.defineProperty 来对数据�
 
 希望通过本文的介绍 大家能够理解 Vue 的响应式数据原理 并在实际开发中灵活运用
 
-如果你还有其他疑问 欢迎在评论区留言 我会尽量为大家解答

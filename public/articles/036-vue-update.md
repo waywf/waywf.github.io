@@ -2,7 +2,7 @@
 title: Vue2.0源码解读-渲染更新原理
 excerpt: 深入解析Vue2.0渲染更新原理
 category: 前端开发
-date: 2026-02-25
+date: 2022-01-18
 readTime: 30
 tags: JavaScript, 底层系列, Vue2
 ---
@@ -239,4 +239,3 @@ export function popTarget() {
 
 希望通过本文的介绍 大家能够理解 Vue 的渲染更新原理 并在实际开发中灵活运用
 
-如果你还有其他疑问 欢迎在评论区留言 我会尽量为大家解答

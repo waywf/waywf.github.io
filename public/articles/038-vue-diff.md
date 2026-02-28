@@ -2,7 +2,7 @@
 title: Vue2.0源码解读-diff算法原理
 excerpt: 深入解析Vue2.0 diff算法原理
 category: 前端开发
-date: 2026-02-25
+date: 2022-03-30
 readTime: 30
 tags: JavaScript, 底层系列, Vue2
 ---
@@ -247,4 +247,3 @@ diff 算法的核心是采用双指针的方式 对比新老 vnode 的儿子节�
 
 希望通过本文的介绍 大家能够理解 Vue 的 diff 算法原理 并在实际开发中灵活运用
 
-如果你还有其他疑问 欢迎在评论区留言 我会尽量为大家解答

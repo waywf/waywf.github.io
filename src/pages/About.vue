@@ -124,9 +124,9 @@
               <h3 class="text-lg font-bold text-primary mb-3">设计工具(见习)</h3>
               <ul class="space-y-2 text-muted-foreground">
                 <li>• Figma</li>
-                <li>• 蓝湖</li>
+                <li>• Axure</li>
                 <li>• Sketch</li>
-                <li>• pencil</li>
+                <li>• Pencil</li>
                 <li>• ---</li>
               </ul>
             </div>

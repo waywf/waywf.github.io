@@ -2,7 +2,7 @@
 title: AI Agent底层原理：从架构到实现
 excerpt: 深入解析AI Agent的底层原理，包括架构设计、决策机制和实现方法
 category: AI
-date: 2026-02-25
+date: 2025-10-28
 readTime: 25
 tags: AI Agent, 底层原理, 架构设计
 ---

@@ -2,7 +2,7 @@
 title: JavaScript深入之从ECMAScript规范解读this
 excerpt: 深入解析JavaScript的this关键字
 category: 前端开发
-date: 2026-02-25
+date: 2020-08-18
 readTime: 25
 tags: JavaScript, 底层系列
 ---

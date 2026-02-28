@@ -3,7 +3,7 @@ title: LangChain Agent 开发指南：从零开始构建智能代理
 category: AI
 excerpt: 本文详细介绍了如何使用 LangChain 开发自己的智能代理，包括核心概念、具体案例、代码实现和最佳实践。
 tags: AI, LangChain, Agent, 大模型, 开发指南
-date: 2026-02-26
+date: 2025-12-15
 ---
 
 ## 一、LangChain Agent 简介

@@ -2,7 +2,7 @@
 title: 什么是prompt，什么是提示词工程，好用的提示词github项目
 excerpt: 深入了解prompt的定义、提示词工程和热门项目
 category: AI
-date: 2026-02-25
+date: 2025-09-05
 readTime: 14
 tags: Prompt
 ---

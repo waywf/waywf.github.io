@@ -2,7 +2,7 @@
 title: JavaScript深入之闭包
 excerpt: 深入解析JavaScript闭包
 category: 前端开发
-date: 2026-02-25
+date: 2020-12-20
 readTime: 20
 tags: JavaScript, 底层系列
 ---
@@ -197,4 +197,3 @@ data[1] 和 data[2] 是一样的道理。
 
 闭包是JavaScript中一个非常重要的概念，也是面试中经常被问到的问题。希望通过本文的介绍，大家能够理解闭包的概念和应用。
 
-如果你还有其他疑问，欢迎在评论区留言，我会尽量为大家解答。

@@ -2,7 +2,7 @@
 title: LLM是如何回答提问、找到答案，详解过程和运行原理
 excerpt: 深入解析大型语言模型回答提问的全过程和底层运行原理
 category: AI
-date: 2026-02-25
+date: 2025-09-12
 readTime: 25
 tags: LLM, 运行原理, 回答过程
 ---

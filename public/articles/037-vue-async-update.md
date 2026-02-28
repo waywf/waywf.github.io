@@ -2,7 +2,7 @@
 title: Vue2.0源码解读-异步更新原理
 excerpt: 深入解析Vue2.0异步更新原理
 category: 前端开发
-date: 2026-02-25
+date: 2022-02-25
 readTime: 25
 tags: JavaScript, 底层系列, Vue2
 ---
@@ -167,4 +167,4 @@ export function renderMixin(Vue) {
 
 ## 异步更新的思维导图小结
 
-至此 Vue 的异步更新原理已经完结 核心原理就是 nextTick 实现异步队列 前提是需要理解 js 事件循环机制 大家可以看着思维导图自己动手写一遍核心代码哈 遇到不懂或者有争议的地方欢迎评论留言
+至此 Vue 的异步更新原理已经完结 核心原理就是 nextTick 实现异步队列 前提是需要理解 js 事件循环机制 大家可以看着思维导图自己动手写一遍核心代码哈

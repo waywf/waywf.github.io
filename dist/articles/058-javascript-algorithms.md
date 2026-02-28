@@ -3,7 +3,7 @@ title: JavaScript算法详解：从实现到优化
 category: 算法
 excerpt: 本文详细介绍了常见算法的JavaScript实现，包括排序算法、搜索算法、动态规划等，配有详细注释和动图展示，帮助你彻底掌握算法的实现原理和应用场景。
 tags: JavaScript, 算法, 排序算法, 搜索算法, 动态规划
-date: 2026-02-26
+date: 2025-04-12
 ---
 
 ## 引言

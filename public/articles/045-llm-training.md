@@ -2,7 +2,7 @@
 title: LLM训练底层原理：从数据到模型的完整流程
 excerpt: 深入解析LLM训练的底层原理，包括数据预处理、模型架构、训练策略和优化方法
 category: AI
-date: 2026-02-25
+date: 2025-10-22
 readTime: 30
 tags: LLM, 训练原理, 底层架构
 ---

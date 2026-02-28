@@ -2,7 +2,7 @@
 title: 什么是AI Agent，agent深入理解和好用的AI Agent项目
 excerpt: 深入了解AI Agent的定义、原理和热门项目
 category: AI
-date: 2026-02-25
+date: 2025-08-22
 readTime: 18
 tags: AI Agent
 ---

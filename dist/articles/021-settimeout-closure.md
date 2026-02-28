@@ -2,7 +2,7 @@
 title: 深入JavaScript系列-setTimeout与循环闭包面试题详解
 excerpt: 深入解析setTimeout与循环闭包的面试题
 category: 前端开发
-date: 2026-02-25
+date: 2020-09-22
 readTime: 15
 tags: JavaScript, 底层系列
 ---
@@ -141,4 +141,3 @@ for (let i = 1; i <= 5; i++) {
 
 通过本文的介绍，我们了解了setTimeout的执行时机和闭包的应用。希望大家能够掌握这些知识，并在面试中取得好成绩。
 
-如果你还有其他疑问，欢迎在评论区留言，我会尽量为大家解答。

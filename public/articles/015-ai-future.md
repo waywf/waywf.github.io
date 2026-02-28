@@ -2,7 +2,7 @@
 title: AI的未来发展趋势，从技术到社会的全面展望
 excerpt: 深入解析AI的未来发展趋势，从技术、社会、经济等多个角度全面展望
 category: AI
-date: 2026-02-25
+date: 2025-10-15
 readTime: 32
 tags: AI未来, 发展趋势, 技术展望
 ---
