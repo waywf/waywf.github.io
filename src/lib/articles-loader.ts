@@ -20,6 +20,7 @@ export interface Article {
 export interface ManifestItem {
   id: string;
   filename: string;
+  title: string;
   category: string;
   tags: string[];
   date: string;

@@ -143,33 +143,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, onActivated, onDeactivated } from 'vue'
 import { RouterLink } from 'vue-router'
 import Navigation from '../components/Navigation.vue'
 import Footer from '../components/Footer.vue'
 import { loadArticlesByIds, loadAllArticlesMetadata, getArticleIdsByCategory, getArticleIdsByTag, loadManifest, type Article, type ManifestItem } from '../lib/articles-loader'
 
-// 使用sessionStorage保存筛选条件和分页信息
-const getInitialValue = (key: string, defaultValue: string) => {
+// 组件名称，用于KeepAlive缓存
+defineOptions({
+  name: 'Articles'
+})
+
+// 使用sessionStorage保存滚动位置（筛选条件和分页信息由KeepAlive自动保持）
+const getInitialScrollPosition = (): number => {
   if (typeof sessionStorage !== 'undefined') {
-    const saved = sessionStorage.getItem(key)
-    return saved ? saved : defaultValue
+    const saved = sessionStorage.getItem('articlesScrollPosition')
+    return saved ? parseInt(saved) : 0
   }
-  return defaultValue
+  return 0
 }
 
-const getInitialNumber = (key: string, defaultValue: number) => {
-  if (typeof sessionStorage !== 'undefined') {
-    const saved = sessionStorage.getItem(key)
-    return saved ? parseInt(saved) : defaultValue
-  }
-  return defaultValue
-}
-
-const selectedCategory = ref(getInitialValue('selectedCategory', '全部'))
-const selectedTag = ref(getInitialValue('selectedTag', '全部标签'))
-const searchQuery = ref(getInitialValue('searchQuery', ''))
-const currentPage = ref(getInitialNumber('currentPage', 1))
+const selectedCategory = ref('全部')
+const selectedTag = ref('全部标签')
+const searchQuery = ref('')
+const currentPage = ref(1)
 const showAllTags = ref(false)
 const displayedArticles = ref<Article[]>([])
 const availableCategories = ref<string[]>([])
@@ -195,8 +192,7 @@ const getFilteredArticleIds = (): string[] => {
   if (searchQuery.value) {
     const lowerQuery = searchQuery.value.toLowerCase()
     result = result.filter(item =>
-      item.id.toLowerCase().includes(lowerQuery) ||
-      item.filename.toLowerCase().includes(lowerQuery)
+      item.title.toLowerCase().includes(lowerQuery)
     )
   }
 
@@ -246,12 +242,6 @@ const loadArticles = async () => {
 
 // 监听过滤条件变化，重置分页并重新加载
 watch([selectedCategory, selectedTag, searchQuery], async () => {
-  if (typeof sessionStorage !== 'undefined') {
-    sessionStorage.setItem('selectedCategory', selectedCategory.value)
-    sessionStorage.setItem('selectedTag', selectedTag.value)
-    sessionStorage.setItem('searchQuery', searchQuery.value)
-    sessionStorage.setItem('currentPage', '1')
-  }
   currentPage.value = 1
   await loadArticles()
 })
@@ -266,12 +256,6 @@ const resetFilters = async () => {
   selectedTag.value = '全部标签'
   searchQuery.value = ''
   currentPage.value = 1
-  if (typeof sessionStorage !== 'undefined') {
-    sessionStorage.removeItem('selectedCategory')
-    sessionStorage.removeItem('selectedTag')
-    sessionStorage.removeItem('searchQuery')
-    sessionStorage.removeItem('currentPage')
-  }
   await loadArticles()
 }
 
@@ -282,9 +266,6 @@ const loadMore = async () => {
   // Simulate asynchronous loading delay to improve UX
   await new Promise(resolve => setTimeout(resolve, 600))
   currentPage.value++
-  if (typeof sessionStorage !== 'undefined') {
-    sessionStorage.setItem('currentPage', currentPage.value.toString())
-  }
   // 加载更多文章
   const ids = getFilteredArticleIds()
   const pageIds = ids.slice((currentPage.value - 1) * articlesPerPage.value, currentPage.value * articlesPerPage.value)
@@ -297,6 +278,61 @@ const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr)
   return date.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })
 }
+
+// 滚动到指定位置（带动画）
+const scrollToPosition = (position: number, duration: number = 300) => {
+  const start = window.scrollY
+  const distance = position - start
+  const startTime = performance.now()
+
+  const easeInOutCubic = (t: number): number => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+  }
+
+  const animate = (currentTime: number) => {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    const easeProgress = easeInOutCubic(progress)
+
+    window.scrollTo(0, start + distance * easeProgress)
+
+    if (progress < 1) {
+      requestAnimationFrame(animate)
+    }
+  }
+
+  requestAnimationFrame(animate)
+}
+
+// 组件激活时恢复滚动位置
+onActivated(() => {
+  const savedPosition = getInitialScrollPosition()
+  console.log('onActivated called, savedPosition:', savedPosition)
+  if (savedPosition > 0) {
+    // 使用setTimeout确保DOM已更新，文章列表已渲染
+    setTimeout(() => {
+      console.log('Scrolling to position:', savedPosition)
+      scrollToPosition(savedPosition, 400)
+      // 清除滚动位置，避免重复滚动
+      sessionStorage.removeItem('articlesScrollPosition')
+    }, 50)
+  }
+})
+
+// 保存滚动位置的函数（供其他地方调用）
+const saveScrollPosition = () => {
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.setItem('articlesScrollPosition', window.scrollY.toString())
+  }
+}
+
+// 页面首次挂载时清除滚动位置
+onMounted(() => {
+  // 检查是否是首次挂载（不是从KeepAlive缓存恢复）
+  const scrollPosition = getInitialScrollPosition()
+  // 如果没有保存的滚动位置，说明是首次进入，不需要处理
+  // 如果有滚动位置，说明可能是从文章详情返回，由onActivated处理
+})
 </script>
 
 <style scoped></style>
