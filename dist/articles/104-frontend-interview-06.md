@@ -2329,5 +2329,40 @@ class MapComponent {
       marker.addEventListener('click', options.onClick);
     }
     
+    this.map.addOverlay(marker);
+    this.markers.push(marker);
+    return marker;
+  }
+  
+  destroy() {
+    this.markers.forEach(m => this.map.removeOverlay(m));
+    this.markers = [];
+  }
+}
+```
+
+## 十、总结
+
+以上十大高频业务场景，涵盖了前端开发中最常遇到的问题：
+
+1. **表单处理**：复杂验证、异步验证、联动
+2. **图片加载**：懒加载、预加载、裁剪压缩
+3. **购物车**：核心功能、持久化、并发处理
+4. **搜索**：实时搜索、历史记录、高亮、倒排索引
+5. **支付**：流程设计、状态轮询、安全防护
+6. **聊天**：WebSocket、消息优化、虚拟滚动
+7. **上传下载**：分片上传、断点续传、进度显示
+8. **图表**：组件封装、数据处理、响应式
+9. **地图**：基础组件、标记点、路径绘制
+
+掌握这些业务场景，面试时遇到业务题就稳了！
+
+---
+
+**相关阅读**：
+- [第一篇：JavaScript 核心与框架原理](099-frontend-interview.md)
+- [第二篇：网络协议与工程化](100-frontend-interview-02.md)
+    }
+    
     if (options.label) {
       const label = new BMap
