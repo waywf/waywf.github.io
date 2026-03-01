@@ -1085,5 +1085,21 @@
     ],
     "date": "2026-03-01 10:00:00",
     "title": "04.前端高频面试题深度解析：从 Node.js 到工程化架构的终极挑战"
+  },
+  {
+    "id": "103-frontend-interview-05",
+    "filename": "103-frontend-interview-05.md",
+    "category": "前端开发",
+    "tags": [
+      "前端面试",
+      "SSR",
+      "WebWorker",
+      "前端测试",
+      "WebSocket",
+      "PWA",
+      "系统设计"
+    ],
+    "date": "2026-03-01 10:00:00",
+    "title": "05.前端高频面试题深度解析：从 SSR 到系统设计的巅峰对决"
   }
 ]
