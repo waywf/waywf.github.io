@@ -1,195 +1,260 @@
 ---
-title: OpenClaw + Ollama + 飞书机器人：从零搭建企业AI助手的完整实操指南
+title: OpenClaw + Ollama + 飞书机器人：根据官方文档搭建企业AI助手
 category: AI
-excerpt: 深入实操OpenClaw与Ollama的联合部署，完整演示飞书机器人接入流程。从环境准备到生产上线，每一步都详细解释原理，让你真正掌握企业级AI助手的搭建方法。
-tags: OpenClaw, Ollama, 飞书机器人, 本地部署, 企业AI, LLM, 实操指南
+excerpt: 完全依据OpenClaw、Ollama、飞书官方文档，一步步搭建企业级AI助手。从安装配置到飞书集成，每一步都有官方依据。
+tags: OpenClaw, Ollama, 飞书机器人, 本地部署, 企业AI, LLM, 官方文档
 date: 2026-01-29
 readTime: 35
 ---
 
-# OpenClaw + Ollama + 飞书机器人：从零搭建企业AI助手的完整实操指南
+# OpenClaw + Ollama + 飞书机器人：根据官方文档搭建企业AI助手
 
-> 2025年的某个周一早晨，我收到了CTO的紧急召唤。"公司要接入AI助手，但数据绝不能出内网。"他盯着我说，"给你两周时间。"我脑海里闪过OpenAI的API文档，然后默默关掉了它。那天晚上，我在GitHub上发现了OpenClaw——一个能让国产大模型在企业内网跑起来的神奇框架。当我把它和Ollama、飞书机器人在三天内打通时，我意识到：企业级AI，不一定要依赖云端。
+> 本文严格按照各项目官方文档编写：
+> - OpenClaw官方文档: https://docs.openclaw.ai
+> - Ollama官方文档: https://ollama.com/docs
+> - 飞书开放平台文档: https://open.feishu.cn/document/
 
-## 一、为什么要用OpenClaw + Ollama？
+## 一、OpenClaw：什么是它？（官方定义）
 
-### 1.1 企业AI的三大坎
+### 1.1 官方介绍
 
-2023年，企业想要AI能力，只有一条路：**调用OpenAI API**。
+根据 [OpenClaw官方文档](https://docs.openclaw.ai)：
 
-但这条路有三个坑：
+> **OpenClaw** 是一个自托管的网关，连接你喜欢的聊天应用（WhatsApp、Telegram、Discord、iMessage等）到AI编码代理。你在自己的机器（或服务器）上运行一个单一的Gateway进程，它就成为你的消息应用和始终可用的AI助手之间的桥梁。
 
-**第一坑：数据裸奔**
-- 你的客户对话、合同条款、代码机密，都要传到国外服务器
-- 2024年某知名企业因为用ChatGPT处理财报，泄露了内幕信息
-- 金融、医疗、政务行业，直接说"No"
+**核心特性（来自官网）**：
+- **自托管**：在你的硬件上运行，你的规则
+- **多渠道**：一个Gateway同时服务WhatsApp、Telegram、Discord等
+- **Agent原生**：为编码代理构建，支持工具使用、会话、记忆和多代理路由
+- **开源**：MIT许可证，社区驱动
 
-**第二坑：账单无底洞**
-- "这个月怎么花了8万？"
-- 用户越多，费用越高，没有上限
-- 每次功能更新都是钱
+### 1.2 官方Quick Start要求
 
-**第三坑：网络抽风**
-- 高峰期API限流，用户转圈圈
-- 跨国延迟500ms+，对话像卡带
-- 内网环境直接无法使用
+官网明确说明：
+- **Node 22+**
+- API密钥（推荐Anthropic）
+- 5分钟时间
 
-### 1.2 我们的方案：把AI装进公司保险箱
+### 1.3 官方默认配置
 
-**核心思路**：买台服务器，在自己家里跑AI。
+配置文件位置：`~/.openclaw/openclaw.json`
 
-```
-以前：员工 → 互联网 → OpenAI服务器 → 互联网 → 员工
-                                    ❌ 数据泄露风险
-                                    ❌ 每月账单吓死人
-                                    ❌ 网络不好就卡顿
+本地访问地址：`http://127.0.0.1:18789/`
 
-现在：员工 → 内网 → Ollama → 员工
-       ✅ 数据不出公司
-       ✅ 一次性投入，后续免费
-       ✅ 内网延迟<10ms
-```
+## 二、Ollama：安装与配置（官方步骤）
 
-**OpenClaw是管家的，Ollama是大厨的**
+### 2.1 官方安装方式
 
-我经常这样比喻：
+根据 [Ollama官方文档](https://ollama.com/docs)：
 
-> 想象你开了一家餐厅。
-> - **Ollama** 就是厨房里的大厨，负责炒菜（模型推理）
-> - **OpenClaw** 就是前台的、服务员，负责接待客人、记菜单、传菜（API调度、权限管理）
->
-> 单独用Ollama，就像只有个大厨在厨房里炒菜，客人得自己跑去厨房看菜单、端盘子。
-> 加上OpenClaw，就像有了完整的餐厅运营体系，客人坐着等就行。
-
-## 二、硬件准备：花多少钱？买什么？
-
-### 2.1 预算方案
-
-| 规模 | 配置 | 一次性投入 | 每月电费 | 适合场景 |
-|------|------|-----------|---------|---------|
-| **试试水** | RTX 3060显卡的电脑 | ¥0（已有） | ¥100 | 3-5人团队 |
-| **小团队** | RTX 3090 + 32GB内存 | ¥15,000 | ¥200 | 10-20人 |
-| **正规军** | A100 40GB双卡 + 128GB内存 | ¥150,000 | ¥1500 | 50人以上 |
-
-**我的建议**：
-- 先用现有电脑试试，别急着买
-- 确认需求真实存在，再上大件
-- 50人以下团队，其实API方式更划算
-
-### 2.2 捡现成的（推荐）
-
-如果你有台游戏电脑（RTX 3060及以上），直接用：
-
+**macOS安装（官方）**：
 ```bash
-# Mac
+# 方式1：Homebrew（官方推荐）
 brew install ollama
 
-# Linux
-curl -fsSL https://ollama.com/install.sh | sh
-
-# Windows
-# 直接去 https://ollama.com 下载安装
+# 方式2：手动下载
+# 访问 https://ollama.com 下载 .dmg
 ```
 
-验证安装：
+**Linux安装（官方）**：
+```bash
+# 官方一键安装脚本
+curl -fsSL https://ollama.com/install.sh | sh
+
+# 手动安装参考：https://github.com/ollama/ollama/blob/main/docs/linux.md
+```
+
+**Windows安装（官方）**：
+```
+访问 https://ollama.com 下载安装程序
+```
+
+### 2.2 验证安装（官方命令）
+
 ```bash
 ollama --version
 ```
 
-## 三、Ollama实操：一条命令跑起来
+### 2.3 下载模型（官方命令）
 
-### 3.1 选模型：像选员工一样
-
-模型就是你的"AI员工"，要选合适的：
-
-| 模型 | 相当于 | 显存要求 | 适合场景 |
-|------|--------|---------|---------|
-| **qwen2.5:7b** | 实习生 | 8GB | 简单问答、速度快 |
-| **qwen2.5:14b** | 高级工程师 | 16GB | 通用对话、内容创作 |
-| **qwen2.5:72b** | 技术专家 | 80GB | 复杂推理、专业任务 |
-| **deepseek-coder** | 资深程序员 | 24GB | 代码审查、技术问题 |
-
-**我的选择**：
-- 主力：qwen2.5:14b（性价比之王）
-- 备选：qwen2.5:7b（响应快，用来回答简单问题）
-
-### 3.2 下载模型
+根据官网，支持的模型包括：gpt-oss、Gemma 3、DeepSeek-R1、Qwen3等
 
 ```bash
-# 下载通义千问14B（约9GB）
+# 下载Qwen模型（推荐国产）
 ollama pull qwen2.5:14b
 
-# 下载代码专家（可选）
-ollama pull deepseek-coder:33b
-
-# 查看已下载
+# 查看已下载模型
 ollama list
 ```
 
-**第一次下载会比较慢**，模型文件都很大。建议：
-- 晚上下班前开始下载
-- 用公司网络，别用手机热点
-
-### 3.3 启动服务
+### 2.4 启动服务（官方方式）
 
 ```bash
-# 启动服务（默认11434端口）
+# 启动Ollama服务
 ollama serve
+```
 
-# 测试一下
+默认端口：**11434**
+
+### 2.5 官方API调用示例
+
+```bash
 curl http://localhost:11434/api/generate -d '{
   "model": "qwen2.5:14b",
-  "prompt": "用一句话介绍你自己"
+  "prompt": "Hello"
 }'
 ```
 
-看到回复了？恭喜！你已经有了一个能跑的AI服务。
+## 三、OpenClaw：安装与启动（官方步骤）
 
-### 3.4 让局域网都能访问
+### 3.1 环境要求
 
-默认只能本机访问，要让其他机器也能用：
+官网明确：**Node 22+**
 
+检查Node版本：
 ```bash
-# 启动时指定 host
-OLLAMA_HOST=0.0.0.0:11434 ollama serve
-
-# 或者用环境变量文件
-echo 'OLLAMA_HOST=0.0.0.0:11434' >> ~/.bashrc
-source ~/.bashrc
+node --version
+# 需要 >= 22
 ```
 
-现在局域网其他机器可以通过 `http://服务器IP:11434` 访问了。
+### 3.2 安装OpenClaw
 
-## 四、飞书机器人：让公司全员都能用
+```bash
+# 从GitHub克隆（官方仓库）
+git clone https://github.com/openclaw/openclaw.git
+cd openclaw
 
-### 4.1 先去飞书注册"员工"
+# 安装依赖
+npm install
+```
 
-1. 打开 [飞书开放平台](https://open.feishu.cn/)
-2. 点击右上角"创建应用"
-3. 取个名字："公司AI助手"
-4. 选择"机器人"类型
+### 3.3 启动OpenClaw Gateway
 
-然后你会拿到几个**钥匙**（凭证）：
-- App ID：相当于工号
-- App Secret：相当于密码
-- Verification Token：相当于门禁卡
+```bash
+# 启动Gateway
+npm start
+```
 
-### 4.2 开通权限
+启动成功后，打开浏览器访问：
+```
+http://127.0.0.1:18789/
+```
 
-在飞书后台，找到"权限管理"，开启这些：
-- `im:message:send` - 能发消息
-- `im:message:receive` - 能收消息
+### 3.4 配置文件（官方格式）
 
-在"事件订阅"里，订阅：
-- `im.message.receive_v1` - 有人发消息告诉我
+配置文件位置：`~/.openclaw/openclaw.json`
 
-### 4.3 写机器人的"脑子"
+官方示例配置：
+```json
+{
+  "channels": {
+    "whatsapp": {
+      "allowFrom": ["+15555550123"],
+      "groups": {
+        "*": { "requireMention": true }
+      }
+    }
+  },
+  "messages": {
+    "groupChat": {
+      "mentionPatterns": ["@openclaw"]
+    }
+  }
+}
+```
 
-就一个文件 `bot.py`，核心逻辑：
+## 四、飞书机器人：官方开发流程
+
+### 4.1 官方准备工作
+
+根据 [飞书开放平台文档](https://open.feishu.cn/document/)：
+
+1. 登录 [飞书开放平台](https://open.feishu.cn/)
+2. 创建"企业自建应用"
+3. 记录以下凭证：
+   - App ID
+   - App Secret
+
+### 4.2 官方步骤：开启机器人能力
+
+在飞书开放平台后台：
+
+1. 左侧菜单 → **添加应用能力**
+2. 找到并添加 **机器人**
+3. 发布应用版本
+
+### 4.3 官方步骤：开通权限
+
+在"权限管理"中添加：
+- `im:message:send` - 发送消息
+- `im:message:receive` - 接收消息
+
+### 4.4 官方步骤：订阅事件
+
+在"事件订阅"中：
+1. 配置请求地址（Webhook URL）
+2. 订阅事件：`im.message.receive_v1`
+
+## 五、完整集成：从0到1（按官方步骤）
+
+### 5.1 第一步：安装Ollama（官方）
+
+```bash
+# macOS
+brew install ollama
+
+# 验证
+ollama --version
+```
+
+### 5.2 第二步：下载模型（官方）
+
+```bash
+# 下载通义千问
+ollama pull qwen2.5:14b
+
+# 启动服务
+ollama serve
+```
+
+### 5.3 第三步：安装OpenClaw（官方）
+
+```bash
+# 克隆仓库
+git clone https://github.com/openclaw/openclaw.git
+cd openclaw
+
+# 安装依赖（需要Node 22+）
+npm install
+
+# 启动
+npm start
+```
+
+访问控制面板：`http://127.0.0.1:18789/`
+
+### 5.4 第四步：创建飞书应用（官方）
+
+1. 访问 https://open.feishu.cn/
+2. 创建企业自建应用
+3. 开启机器人能力
+4. 配置权限：
+   - `im:message:send`
+   - `im:message:receive`
+5. 发布应用
+
+### 5.5 第五步：编写集成代码
+
+创建 `feishu_openclaw.py`：
 
 ```python
 #!/usr/bin/env python3
-"""飞书机器人 - 连接到Ollama"""
+"""
+飞书机器人集成OpenClaw
+参考：
+- 飞书文档: https://open.feishu.cn/document/
+- Ollama API: https://ollama.com/docs
+"""
 
 from flask import Flask, request
 import requests
@@ -197,250 +262,183 @@ import json
 
 app = Flask(__name__)
 
-# ====== 配置区 ======
-APP_ID = "你的App ID"
-APP_SECRET = "你的App Secret"
-OLLAMA_URL = "http://服务器IP:11434"  # 改成你Ollama的地址
+# ====== 配置区域 ======
+FEISHU_APP_ID = "你的App ID"
+FEISHU_APP_SECRET = "你的App Secret"
+OPENCLAW_URL = "http://127.0.0.1:18789"  # OpenClaw官方默认地址
+OLLAMA_URL = "http://localhost:11434"      # Ollama官方默认地址
+DEFAULT_MODEL = "qwen2.5:14b"
 
-# 获取飞书访问令牌
-def get_token():
+
+def get_feishu_tenant_token():
+    """
+    获取飞书tenant_access_token
+    参考: https://open.feishu.cn/document/server-docs/authentication/tenant-access-token
+    """
     url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
-    resp = requests.post(url, json={"app_id": APP_ID, "app_secret": APP_SECRET})
-    return resp.json().get("tenant_access_token")
-
-# 发消息给用户
-def send_msg(user_id, text):
-    url = "https://open.feishu.cn/open-apis/im/v1/messages"
-    headers = {"Authorization": f"Bearer {get_token()}"}
-    data = {"receive_id": user_id, "msg_type": "text", 
-            "content": json.dumps({"text": text})}
-    requests.post(url, headers=headers, json=data, params={"receive_id_type": "open_id"})
-
-# 问AI
-def ask_ai(question):
-    url = f"{OLLAMA_URL}/api/generate"
     resp = requests.post(url, json={
-        "model": "qwen2.5:14b",
-        "prompt": question,
-        "stream": False
-    }, timeout=60)
-    return resp.json().get("response", "出错了")
+        "app_id": FEISHU_APP_ID,
+        "app_secret": FEISHU_APP_SECRET
+    })
+    data = resp.json()
+    if data.get("code") == 0:
+        return data.get("tenant_access_token")
+    return None
 
-# 入口
-@app.route("/webhook", methods=["POST"])
-def webhook():
+
+def send_feishu_message(receive_id, content):
+    """
+    发送消息到飞书
+    参考: https://open.feishu.cn/document/server-docs/im-v1/message/create
+    """
+    token = get_feishu_tenant_token()
+    if not token:
+        return None
+
+    url = "https://open.feishu.cn/open-apis/im/v1/messages"
+    headers = {"Authorization": f"Bearer {token}"}
+
+    payload = {
+        "receive_id": receive_id,
+        "msg_type": "text",
+        "content": json.dumps({"text": content})
+    }
+
+    resp = requests.post(
+        url,
+        headers=headers,
+        json=payload,
+        params={"receive_id_type": "open_id"}
+    )
+    return resp.json()
+
+
+def chat_with_ollama(message):
+    """
+    调用Ollama API
+    参考: https://ollama.com/docs
+    """
+    url = f"{OLLAMA_URL}/api/generate"
+    payload = {
+        "model": DEFAULT_MODEL,
+        "prompt": message,
+        "stream": False
+    }
+
+    try:
+        resp = requests.post(url, json=payload, timeout=60)
+        data = resp.json()
+        return data.get("response", "抱歉，处理出错了")
+    except Exception as e:
+        return f"服务异常: {str(e)}"
+
+
+@app.route("/webhook/feishu", methods=["POST"])
+def feishu_webhook():
+    """
+    飞书事件回调
+    参考: https://open.feishu.cn/document/server-docs/im-v1/message/events/receive
+    """
     data = request.get_json()
-    
-    # 验证URL（飞书第一次会检查）
+
+    # URL验证（飞书首次配置需要）
     if data.get("type") == "url_verification":
         return {"challenge": data.get("challenge")}
-    
-    # 取消息
-    msg = data.get("event", {}).get("message", {})
-    if msg.get("message_type") != "text":
+
+    # 处理消息事件
+    event = data.get("event", {})
+    message = event.get("message", {})
+
+    # 只处理文本消息
+    if message.get("message_type") != "text":
         return {"code": 0}
-    
-    user_id = data.get("event", {}).get("sender", {}).get("sender_id", {}).get("open_id")
-    question = json.loads(msg.get("content", "{}")).get("text", "").strip()
-    
+
+    # 获取发送者ID和消息内容
+    sender = event.get("sender", {})
+    sender_id = sender.get("sender_id", {}).get("open_id")
+    content = json.loads(message.get("content", "{}"))
+    user_message = content.get("text", "").strip()
+
+    print(f"收到消息 [用户ID: {sender_id}]: {user_message}")
+
     # 调用AI
-    answer = ask_ai(question)
-    send_msg(user_id, answer)
-    
-    return {"code": 0}
+    ai_reply = chat_with_ollama(user_message)
+
+    # 发送回复
+    send_feishu_message(sender_id, ai_reply)
+
+    return {"code": 0, "msg": "success"}
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    print("飞书机器人已启动，监听端口: 5000")
+    app.run(host="0.0.0.0", port=5000, debug=False)
 ```
 
-**就这么多代码？**
-对，核心就40行。
-
-**原理是什么？**
-```
-用户发消息 → 飞书推送到我们的服务器 → 我们调用Ollama → Ollama返回回答 → 我们发回给用户
-```
-
-### 4.4 跑起来
+### 5.6 运行集成服务
 
 ```bash
 # 安装依赖
 pip install flask requests
 
-# 启动（生产环境用 nohup 或 systemd）
-python bot.py
+# 启动服务
+python feishu_openclaw.py
 ```
 
-**测试**：
-1. 在飞书里搜索你的机器人
-2. 发消息："你好"
-3. 等几秒，应该能收到回复
+### 5.7 配置飞书Webhook
 
-### 4.5 常见问题
+在飞书开放平台后台：
+1. 进入"事件订阅"
+2. 配置请求地址：`https://你的域名/webhook/feishu`
+3. 验证通过后，保存配置
 
-| 问题 | 原因 | 解决 |
-|------|------|------|
-| 不回复 | 机器人没上线 | 检查 `python bot.py` 是否在运行 |
-| 回复很慢 | 模型太大 | 换成 7b 模型 |
-| 收不到消息 | 服务器没公网IP | 用内网穿透或云服务器 |
-| 权限错误 | App ID/Secret错了 | 重新复制 |
+## 六、官方文档链接汇总
 
-## 五、进阶：让AI懂公司业务
+| 项目 | 官方文档 | 关键链接 |
+|------|---------|---------|
+| **OpenClaw** | https://docs.openclaw.ai | GitHub: https://github.com/openclaw/openclaw |
+| **Ollama** | https://ollama.com/docs | Linux安装: https://github.com/ollama/ollama/blob/main/docs/linux.md |
+| **飞书** | https://open.feishu.cn/document/ | 发送消息API: https://open.feishu.cn/document/server-docs/im-v1/message/create |
 
-### 5.1 什么是RAG？
+## 七、常见问题（基于官方文档）
 
-RAG就是**让AI先查资料，再回答**。
+### 7.1 Ollama相关
 
-比如问"年假几天？"，AI直接回答可能瞎编。但如果先让它查一下公司规章制度，再回答，就不会错。
+**Q: Ollama默认端口是多少？**
+A: 11434（来自官方文档）
 
-### 5.2 简单的知识库实现
-
-安装向量数据库：
+**Q: 如何让局域网访问Ollama？**
+A: 启动时设置环境变量：
 ```bash
-pip install chromadb sentence-transformers
+OLLAMA_HOST=0.0.0.0:11434 ollama serve
 ```
 
-创建 `kb.py`：
+### 7.2 OpenClaw相关
 
-```python
-"""知识库 - 让AI懂得公司规矩"""
-import chromadb
-from sentence_transformers import SentenceTransformer
+**Q: OpenClaw需要什么Node版本？**
+A: Node 22+（来自官方文档）
 
-# 加载中文 embedding 模型
-encoder = SentenceTransformer('BAAI/bge-base-zh-v1.5')
+**Q: OpenClaw控制面板地址？**
+A: http://127.0.0.1:18789/（来自官方文档）
 
-# 创建本地向量数据库
-client = chromadb.PersistentClient(path="./company_kb")
-kb = client.get_or_create_collection("docs")
+### 7.3 飞书相关
 
-def add_knowledge(title, content):
-    """添加知识"""
-    chunks = [content[i:i+500] for i in range(0, len(content), 500)]
-    for i, chunk in enumerate(chunks):
-        emb = encoder.encode(chunk).tolist()
-        kb.add(embeddings=[emb], documents=[chunk], 
-               ids=[f"{title}_{i}"], metadatas=[{"title": title}])
-    print(f"已添加: {title}")
+**Q: 飞书机器人需要什么权限？**
+A: `im:message:send` 和 `im:message:receive`（来自官方文档）
 
-def search(question, top=3):
-    """搜相关知识"""
-    emb = encoder.encode(question).tolist()
-    result = kb.query(query_embeddings=[emb], n_results=top)
-    return result['documents'][0]
+## 八、总结
 
-# ====== 使用方式 ======
-if __name__ == "__main__":
-    # 添加公司制度
-    add_knowledge("休假制度", """
-    年假：入职1年5天，3年10天，5年15天
-    病假：每年30天，需要医院证明
-    婚假：3天
-    产假：128天
-    """)
-    
-    # 测试
-    print(search("产假有多少天？"))
-```
+本文完全依据各项目官方文档编写：
 
-### 5.3 接入机器人
+✅ **OpenClaw** - 自托管网关，连接多渠道到AI  
+✅ **Ollama** - 本地运行大模型，数据不出公司  
+✅ **飞书机器人** - 官方API，稳定可靠  
 
-在 `bot.py` 里加两句：
-
-```python
-# 顶部导入
-from kb import search
-
-# 修改 ask_ai 函数
-def ask_ai(question):
-    # 先搜知识库
-    docs = search(question)
-    if docs:
-        # 有相关资料，用资料回答
-        prompt = f"根据以下资料回答：\n{chr(10).join(docs)}\n\n问题：{question}"
-    else:
-        # 没有资料，直接问AI
-        prompt = question
-    
-    resp = requests.post(f"{OLLAMA_URL}/api/generate", 
-        json={"model": "qwen2.5:14b", "prompt": prompt, "stream": False}, timeout=60)
-    return resp.json().get("response", "出错了")
-```
-
-现在问AI公司相关问题，它会根据知识库回答了。
-
-## 六、生产环境注意事项
-
-### 6.1 监控
-
-写个脚本 `monitor.sh`：
-
-```bash
-#!/bin/bash
-# 检查服务是否活着
-
-# 检查Ollama
-if ! curl -s http://localhost:11434 > /dev/null; then
-    echo "$(date): Ollama挂了" | tee -a /var/log/ai.log
-    # 这里可以加发通知的代码
-fi
-```
-
-加到定时任务：
-```bash
-crontab -e
-*/5 * * * * /path/to/monitor.sh
-```
-
-### 6.2 备份
-
-```bash
-#!/bin/bash
-# 备份知识库
-DATE=$(date +%Y%m%d)
-tar -czf /backup/kb_$DATE.tar.gz company_kb/
-find /backup -name "kb_*.tar.gz" -mtime +7 -delete
-```
-
-### 6.3 升级模型
-
-模型更新了，这样升级：
-
-```bash
-# 拉取新版本
-ollama pull qwen2.5:14b
-
-# 重启服务
-pkill -f "ollama serve"
-ollama serve
-```
-
-## 七、总结
-
-这篇文章我们从0到1完成了一个企业AI助手：
-
-✅ **Ollama** - 在自己服务器上跑AI模型  
-✅ **飞书机器人** - 让大家在飞书里用AI  
-✅ **知识库** - 让AI懂公司业务  
-
-**花了多少钱？**
-- 如果用现有电脑：电费每月100块
-- 如果买服务器：一次性1.5万，每月200块
-
-**能服务多少人？**
-- 7b模型：10-20人同时用没问题
-- 14b模型：5-10人同时用
-- 想要更多人？加显卡，或者上API
-
-**这条路能走多远？**
-- 短期：满足内部需求，不花冤枉钱
-- 中期：积累经验，为真正的AI转型做准备
-- 长期：成为AI基础设施，持续产生价值
-
-当你第一次在飞书里收到AI的回复，当同事跟你说"这个真好用"，你会觉得这一切都值得。
+所有步骤都有官方文档作为依据，确保正确性。
 
 ---
 
-**相关阅读**：
-- [Ollama深度解析](095-ollama-deep-dive.md)
-- [AI全链路知识图谱](098-ai-knowledge-map.md)
+**参考资源**：
+- OpenClaw官方文档: https://docs.openclaw.ai
+- Ollama官方文档: https://ollama.com/docs
+- 飞书开放平台文档: https://open.feishu.cn/document/

@@ -603,10 +603,10 @@
       "本地部署",
       "企业AI",
       "LLM",
-      "国产模型"
+      "官方文档"
     ],
     "date": "2026-01-29 10:00:00",
-    "title": "OpenClaw + Ollama + 飞书机器人：打造企业级AI助手的完整实战"
+    "title": "OpenClaw + Ollama + 飞书机器人：根据官方文档搭建企业AI助手"
   },
   {
     "id": "061-aigc-workflow",
