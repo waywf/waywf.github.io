@@ -3,7 +3,7 @@ title: 01.前端高频面试题深度解析：从"八股文"到真功夫的修�
 category: 前端开发
 excerpt: 深入剖析2024-2025年前端高频面试题，从JavaScript核心原理到Vue/React框架源码，从浏览器原理到性能优化。不只是背答案，而是真正理解背后的设计哲学和工程实践。
 tags: 前端面试, JavaScript, Vue, React, 浏览器原理, 性能优化, 源码解析
-date: 2026-03-01
+date: 2025-06-01
 readTime: 45
 ---
 

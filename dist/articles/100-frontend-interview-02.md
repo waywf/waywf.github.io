@@ -3,7 +3,7 @@ title: 02.前端高频面试题深度解析：从原理到实战的进阶之路
 category: 前端开发
 excerpt: 前端面试题第二弹！深入解析HTTP/HTTPS、Webpack优化、TypeScript高级类型、设计模式、安全攻防等高频考点。不只是背答案，而是理解背后的工程实践和架构思维。
 tags: 前端面试, HTTP, Webpack, TypeScript, 设计模式, 网络安全, 工程化
-date: 2026-03-01
+date: 2025-06-11
 readTime: 50
 ---
 
