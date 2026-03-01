@@ -38,10 +38,33 @@
         border-color: var(--border);
     }
     
-    /* :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
         color: var(--foreground);
         background-color: var(--muted);
-    } */
+    }
+    
+    /* Light theme code block improvements */
+    :root:not(.dark) :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: #1F2937; /* Darker text for better contrast */
+        background-color: #F3F4F6; /* Light gray background */
+        padding: 0.125rem 0.25rem;
+        border-radius: 0.25rem;
+    }
+    
+    /* Light theme pre block improvements */
+    :root:not(.dark) :where(pre):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        background-color: #F3F4F6; /* Light gray background */
+        border: 1px solid #E5E7EB;
+        border-radius: 0.5rem;
+        padding: 1rem;
+    }
+    
+    /* Light theme inline code improvements */
+    :root:not(.dark) :where(p code, li code, ul code, ol code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: #059669; /* Primary color for inline code */
+        background-color: #ECFDF5; /* Light green background */
+        font-weight: 600;
+    }
 }
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
