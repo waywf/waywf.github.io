@@ -166,7 +166,7 @@ window.addEventListener('message', (event) => {
 
 **核心代码实现**：
 
-```vue
+```js
 <!-- 主应用：App.vue -->
 <template>
   <div class="main-layout">
@@ -508,7 +508,7 @@ start({
 });
 ```
 
-```vue
+```js
 <!-- main-app/src/App.vue -->
 <template>
   <div class="main-app">
