@@ -112,7 +112,7 @@ console.log(window.secret); // undefined
 
 ### 3.3 iframe通信方案
 
-虽然iframe是隔离的，但主应用和子应用之间可以通过`postMessage`进行通信：
+虽然iframe是隔离的，但主应用和子应用之间可以通过 **`postMessage`** 进行通信：
 
 ```javascript
 // 主应用向子应用发送消息
