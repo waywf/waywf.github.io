@@ -1,414 +1,1046 @@
 ---
-title: 本地搭建OpenClaw：国产AI模型的最佳实践
+title: OpenClaw + Ollama + 飞书机器人：打造企业级AI助手的完整实战
 category: AI
-excerpt: 本文详细介绍了如何在本地搭建OpenClaw，选择国产速度快、质量高、最具性价比的模型，并总结出最佳实践。帮助你快速搭建本地AI服务，享受国产AI模型的优势。
-tags: AI, OpenClaw, 本地搭建, 国产模型
-date: 2025-12-02
+excerpt: 深入探索OpenClaw与Ollama的强强联合，从本地模型部署到飞书机器人集成，手把手教你搭建企业级AI助手，实现数据隐私与智能服务的完美平衡。
+tags: OpenClaw, Ollama, 飞书机器人, 本地部署, 企业AI, LLM, 国产模型
+date: 2026-01-29
+readTime: 35
 ---
 
-## 引言
+## 一、OpenClaw是什么？企业AI的瑞士军刀
 
-在AI技术飞速发展的今天，越来越多的开发者希望能够在本地搭建AI服务，以保护数据隐私、降低成本、提高响应速度。OpenClaw作为一个开源的AI框架，提供了灵活的模型部署和管理能力，成为了本地AI服务搭建的热门选择。
+### 1.1 从OpenAI到OpenClaw：自主可控的AI之路
 
-本文将详细介绍如何在本地搭建OpenClaw，选择国产速度快、质量高、最具性价比的模型，并总结出最佳实践。帮助你快速搭建本地AI服务，享受国产AI模型的优势。
+还记得2023年吗？那时候企业想要AI能力，只有一条路：**调用OpenAI API**。
 
----
+但这条路有三大痛点：
+- **数据隐私**：公司机密要传到国外服务器
+- **成本不可控**：Token用量像流水，月底账单吓一跳
+- **网络依赖**：内网环境、跨国延迟、API限流
 
-## 一、什么是OpenClaw
+OpenClaw的出现，就像给企业发了一台**"AI发电机"**——把大模型部署在自己服务器上，数据不出内网，成本可控，响应飞快。
 
-### 1.1 OpenClaw简介
+### 1.2 OpenClaw vs Ollama：双剑合璧
 
-OpenClaw是一个开源的AI框架，它提供了灵活的模型部署和管理能力，支持多种AI模型的部署和运行。OpenClaw的核心特点包括：
+很多人问：有了Ollama为什么还要OpenClaw？
 
-- **多模型支持**：支持多种AI模型的部署和运行，包括LLM、CV、NLP等。
-- **高性能**：优化的模型推理引擎，支持GPU加速，提高模型运行速度。
-- **易用性**：简单易用的API和命令行工具，方便模型的部署和管理。
-- **可扩展性**：模块化的架构，支持自定义插件和扩展。
+| 维度 | Ollama | OpenClaw |
+|------|--------|----------|
+| **定位** | 本地模型运行工具 | 企业级AI服务框架 |
+| **模型支持** | 开源模型为主 | 国产商用模型 +
+| **并发能力** | 单机单用户 | 企业级高并发 |
+| **管理功能** | 基础CLI | 完整管理后台 |
+| **扩展性** | 插件机制 | 企业集成API |
+| **适用场景** | 个人/小团队 | 中大型企业 |
 
-### 1.2 OpenClaw的应用场景
-
-OpenClaw可以应用于多种场景，包括：
-
-- **本地AI服务**：在本地搭建AI服务，保护数据隐私。
-- **边缘计算**：在边缘设备上部署AI模型，提高响应速度。
-- **企业级AI应用**：为企业提供定制化的AI解决方案。
-- **AI研究**：为AI研究人员提供模型部署和测试的平台。
-
----
-
-## 二、本地搭建OpenClaw的准备工作
-
-### 2.1 硬件要求
-
-在本地搭建OpenClaw需要考虑硬件要求，特别是GPU的性能。以下是推荐的硬件配置：
-
-#### 基础配置（适合学习和测试）
-- **CPU**：Intel Core i5或AMD Ryzen 5以上
-- **内存**：16GB以上
-- **GPU**：NVIDIA GeForce RTX 3060或AMD Radeon RX 6600以上
-- **存储**：50GB以上可用空间
-
-#### 进阶配置（适合生产环境）
-- **CPU**：Intel Core i7或AMD Ryzen 7以上
-- **内存**：32GB以上
-- **GPU**：NVIDIA GeForce RTX 4090或AMD Radeon RX 7900 XT以上
-- **存储**：100GB以上可用空间
-
-#### 企业级配置（适合大规模部署）
-- **CPU**：Intel Xeon或AMD EPYC系列
-- **内存**：64GB以上
-- **GPU**：NVIDIA A100或AMD MI25以上
-- **存储**：1TB以上可用空间
-
-### 2.2 软件要求
-
-在本地搭建OpenClaw需要安装以下软件：
-
-#### 操作系统
-- **Windows**：Windows 10或以上
-- **Linux**：Ubuntu 20.04或以上
-- **macOS**：macOS 12或以上
-
-#### 依赖软件
-- **Python**：Python 3.8或以上
-- **Git**：Git 2.0或以上
-- **CUDA**：CUDA 11.0或以上（仅适用于NVIDIA GPU）
-- **cuDNN**：cuDNN 8.0或以上（仅适用于NVIDIA GPU）
-
-### 2.3 网络要求
-
-在本地搭建OpenClaw需要下载模型文件和依赖库，因此需要稳定的网络连接。推荐的网络速度：
-
-- **下载速度**：100Mbps以上
-- **上传速度**：10Mbps以上
-
----
-
-## 三、本地搭建OpenClaw的步骤
-
-### 3.1 安装OpenClaw
-
-#### 步骤1：克隆OpenClaw仓库
-
-首先，需要克隆OpenClaw的GitHub仓库：
-
-```bash
-git clone https://github.com/openclaw/openclaw.git
-cd openclaw
+**最佳实践**：
+```
+Ollama负责：本地模型运行、快速原型验证
+OpenClaw负责：企业级部署、多模型管理、业务集成
 ```
 
-#### 步骤2：安装依赖库
+### 1.3 OpenClaw的核心架构
 
-然后，需要安装OpenClaw的依赖库：
-
-```bash
-# 安装Python依赖
-pip install -r requirements.txt
-
-# 安装GPU加速库（可选）
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      OpenClaw 架构图                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    API Gateway 层                        │   │
+│  │  • RESTful API  • WebSocket  • 认证鉴权  • 限流熔断      │   │
+│  └─────────────────────────┬───────────────────────────────┘   │
+│                            │                                    │
+│  ┌─────────────────────────▼───────────────────────────────┐   │
+│  │                   Model Manager 层                       │   │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐       │   │
+│  │  │ 通义千问 │ │ 文心一言 │ │ DeepSeek│ │  Llama  │       │   │
+│  │  │  Qwen   │ │  ERNIE  │ │   V3    │ │   3.1   │       │   │
+│  │  └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘       │   │
+│  │       └─────────────┴─────────────┴──────────┘           │   │
+│  │                    统一调度接口                           │   │
+│  └─────────────────────────┬───────────────────────────────┘   │
+│                            │                                    │
+│  ┌─────────────────────────▼───────────────────────────────┐   │
+│  │                  Inference Engine 层                     │   │
+│  │  • vLLM  • TensorRT-LLM  • llama.cpp  • 自定义后端      │   │
+│  └─────────────────────────┬───────────────────────────────┘   │
+│                            │                                    │
+│  ┌─────────────────────────▼───────────────────────────────┐   │
+│  │                    Storage 层                            │   │
+│  │  • 模型仓库  • 对话历史  • 知识库  • 配置中心            │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-#### 步骤3：验证安装
+## 二、环境准备：从零开始搭建
 
-最后，需要验证OpenClaw的安装是否成功：
+### 2.1 硬件配置建议
 
-```bash
-python -c "import openclaw; print('OpenClaw installed successfully')"
+**开发测试环境**：
+```yaml
+CPU: Intel i7-12700 / AMD Ryzen 7 5800X
+内存: 32GB DDR4
+GPU: NVIDIA RTX 3090 (24GB显存)
+存储: 500GB NVMe SSD
+网络: 内网千兆
 ```
 
-### 3.2 选择国产AI模型
-
-OpenClaw支持多种AI模型的部署和运行，包括国产模型和国际模型。在选择模型时，需要考虑模型的速度、质量和性价比。以下是推荐的国产AI模型：
-
-#### 1. 文心一言（ERNIE）
-
-**所属公司**：百度
-**模型类型**：LLM
-**特点**：
-- **速度快**：优化的模型结构，支持GPU加速，提高模型运行速度。
-- **质量高**：经过大规模数据训练，具有良好的语言理解和生成能力。
-- **性价比高**：免费版功能强大，付费版价格合理。
-
-**适用场景**：
-- 自然语言处理任务，如文本生成、问答系统、机器翻译等。
-- 对话系统，如智能客服、聊天机器人等。
-
-#### 2. 通义千问（Qwen）
-
-**所属公司**：阿里巴巴
-**模型类型**：LLM
-**特点**：
-- **速度快**：优化的模型结构，支持GPU加速，提高模型运行速度。
-- **质量高**：经过大规模数据训练，具有良好的语言理解和生成能力。
-- **性价比高**：免费版功能强大，付费版价格合理。
-
-**适用场景**：
-- 自然语言处理任务，如文本生成、问答系统、机器翻译等。
-- 对话系统，如智能客服、聊天机器人等。
-
-#### 3. 豆包（Doubao）
-
-**所属公司**：字节跳动
-**模型类型**：LLM
-**特点**：
-- **速度快**：优化的模型结构，支持GPU加速，提高模型运行速度。
-- **质量高**：经过大规模数据训练，具有良好的语言理解和生成能力。
-- **性价比高**：免费版功能强大，付费版价格合理。
-
-**适用场景**：
-- 自然语言处理任务，如文本生成、问答系统、机器翻译等。
-- 对话系统，如智能客服、聊天机器人等。
-
-#### 4. 盘古大模型（Pangu）
-
-**所属公司**：华为
-**模型类型**：多模态模型
-**特点**：
-- **多模态支持**：支持文本、图像、音频等多种模态的处理。
-- **速度快**：优化的模型结构，支持GPU加速，提高模型运行速度。
-- **质量高**：经过大规模数据训练，具有良好的多模态处理能力。
-
-**适用场景**：
-- 多模态处理任务，如图像生成、视频理解、语音识别等。
-- 跨模态应用，如图文生成、视频摘要等。
-
-#### 5. 天工大模型（Tiangong）
-
-**所属公司**：京东
-**模型类型**：LLM
-**特点**：
-- **速度快**：优化的模型结构，支持GPU加速，提高模型运行速度。
-- **质量高**：经过大规模数据训练，具有良好的语言理解和生成能力。
-- **性价比高**：免费版功能强大，付费版价格合理。
-
-**适用场景**：
-- 自然语言处理任务，如文本生成、问答系统、机器翻译等。
-- 对话系统，如智能客服、聊天机器人等。
-
-### 3.3 部署国产AI模型
-
-选择好国产AI模型后，需要将模型部署到OpenClaw中。以下是部署模型的步骤：
-
-#### 步骤1：下载模型文件
-
-首先，需要下载国产AI模型的文件。模型文件可以从模型官方网站或开源平台下载。例如，下载文心一言模型：
-
-```bash
-# 下载文心一言模型
-wget https://ernie.bce.baidu.com/ernie-3.0-base-zh.tar.gz
-# 解压模型文件
-tar -zxvf ernie-3.0-base-zh.tar.gz
+**生产环境（支持50并发）**：
+```yaml
+CPU: Intel Xeon Gold 6348 / AMD EPYC 7543
+内存: 128GB DDR4 ECC
+GPU: 2x NVIDIA A100 40GB
+存储: 2TB NVMe SSD RAID1
+网络: 万兆内网 + 负载均衡
 ```
 
-#### 步骤2：配置模型
+### 2.2 软件环境搭建
 
-然后，需要配置模型的参数和路径。可以使用OpenClaw的配置文件或命令行工具进行配置。例如，配置文心一言模型：
+**Step 1: 安装Docker和Docker Compose**
+
+```bash
+# Ubuntu/Debian
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+
+# 安装Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+**Step 2: 安装NVIDIA Container Toolkit**
+
+```bash
+# 添加NVIDIA仓库
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
+# 安装
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit
+sudo systemctl restart docker
+```
+
+**Step 3: 验证GPU可用性**
+
+```bash
+docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi
+```
+
+## 三、OpenClaw + Ollama 联合部署
+
+### 3.1 为什么需要联合部署？
+
+OpenClaw专注于**企业级管理和调度**，Ollama专注于**本地模型运行**。两者结合：
+
+- OpenClaw提供统一API和管理界面
+- Ollama作为后端推理引擎之一
+- 支持多模型热切换和负载均衡
+
+### 3.2 Docker Compose 部署配置
+
+创建 `docker-compose.yml`：
+
+```yaml
+version: '3.8'
+
+services:
+  # Ollama 服务
+  ollama:
+    image: ollama/ollama:latest
+    container_name: openclaw-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - OLLAMA_ORIGINS=*
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - openclaw-network
+
+  # OpenClaw 核心服务
+  openclaw:
+    image: openclaw/openclaw:latest
+    container_name: openclaw-core
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "8081:8081"  # 管理后台
+    volumes:
+      - openclaw_data:/app/data
+      - openclaw_models:/app/models
+      - ./config:/app/config:ro
+    environment:
+      - OPENCLAW_MODE=production
+      - OPENCLAW_DB_URL=postgresql://openclaw:password@postgres:5432/openclaw
+      - OPENCLAW_REDIS_URL=redis://redis:6379/0
+      - OLLAMA_BASE_URL=http://ollama:11434
+    depends_on:
+      - postgres
+      - redis
+      - ollama
+    networks:
+      - openclaw-network
+
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: openclaw-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: openclaw
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: openclaw
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - openclaw-network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: openclaw-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - openclaw-network
+
+  # Nginx 反向代理
+  nginx:
+    image: nginx:alpine
+    container_name: openclaw-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - openclaw
+    networks:
+      - openclaw-network
+
+volumes:
+  ollama_data:
+  openclaw_data:
+  openclaw_models:
+  postgres_data:
+  redis_data:
+
+networks:
+  openclaw-network:
+    driver: bridge
+```
+
+### 3.3 启动服务
+
+```bash
+# 创建配置目录
+mkdir -p config ssl
+
+# 启动所有服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+
+# 验证服务状态
+docker-compose ps
+```
+
+### 3.4 配置国产模型
+
+创建 `config/models.yml`：
+
+```yaml
+models:
+  # 通义千问 2.5
+  qwen2.5:
+    name: "通义千问 2.5"
+    provider: ollama
+    model_id: qwen2.5:72b
+    max_tokens: 8192
+    temperature: 0.7
+    context_window: 32768
+    capabilities:
+      - chat
+      - code
+      - analysis
+    priority: 1
+
+  # DeepSeek V3
+  deepseek-v3:
+    name: "DeepSeek V3"
+    provider: ollama
+    model_id: deepseek-v3
+    max_tokens: 8192
+    temperature: 0.7
+    context_window: 64000
+    capabilities:
+      - chat
+      - code
+      - reasoning
+    priority: 2
+
+  # 本地轻量级模型（备用）
+  qwen2.5-7b:
+    name: "通义千问 2.5 (7B轻量版)"
+    provider: ollama
+    model_id: qwen2.5:7b
+    max_tokens: 4096
+    temperature: 0.7
+    context_window: 32768
+    capabilities:
+      - chat
+      - quick_response
+    priority: 3
+
+# 路由策略
+routing:
+  default_model: qwen2.5
+  fallback_enabled: true
+  load_balance: round_robin
+```
+
+### 3.5 拉取模型
+
+```bash
+# 进入Ollama容器
+docker exec -it openclaw-ollama bash
+
+# 拉取通义千问
+ollama pull qwen2.5:72b
+
+# 拉取DeepSeek
+ollama pull deepseek-v3
+
+# 拉取轻量版备用
+ollama pull qwen2.5:7b
+
+# 查看已安装模型
+ollama list
+```
+
+## 四、飞书机器人集成实战
+
+### 4.1 飞书机器人创建
+
+**Step 1: 创建企业自建应用**
+
+1. 进入 [飞书开放平台](https://open.feishu.cn/)
+2. 点击"创建企业自建应用"
+3. 填写应用名称："OpenClaw AI助手"
+4. 选择应用类型："机器人"
+
+**Step 2: 获取凭证**
+
+在"凭证与基础信息"页面获取：
+- `App ID` (app_id)
+- `App Secret` (app_secret)
+- `Verification Token` (verify_token)
+- `Encrypt Key` (encrypt_key)
+
+**Step 3: 配置权限**
+
+在"权限管理"中添加以下权限：
+- `im:chat:readonly` - 读取群组信息
+- `im:message:send` - 发送消息
+- `im:message:receive` - 接收消息
+- `im:message.group_msg` - 接收群消息
+
+**Step 4: 配置事件订阅**
+
+在"事件订阅"中设置：
+- 请求地址：`https://your-domain.com/webhook/feishu`
+- 订阅事件：
+  - `im.message.receive_v1` - 接收消息
+  - `im.chat.member.user.added_v1` - 被添加进群
+
+### 4.2 开发飞书机器人服务
+
+创建 `feishu_bot.py`：
 
 ```python
-import openclaw
+#!/usr/bin/env python3
+"""
+OpenClaw 飞书机器人服务
+实现与飞书的消息收发和OpenClaw的集成
+"""
 
-# 配置模型
-model_config = {
-    'model_name': 'ernie-3.0-base-zh',
-    'model_path': './ernie-3.0-base-zh',
-    'device': 'cuda',
-    'max_length': 512
-}
+import asyncio
+import json
+import logging
+import aiohttp
+from typing import Optional, Dict, Any
+from dataclasses import dataclass
+from datetime import datetime
+import hashlib
+import hmac
+import base64
 
-# 加载模型
-model = openclaw.load_model(model_config)
+# 配置日志
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class FeishuConfig:
+    """飞书配置"""
+    app_id: str
+    app_secret: str
+    verify_token: str
+    encrypt_key: Optional[str] = None
+    openclaw_base_url: str = "http://localhost:8080"
+    default_model: str = "qwen2.5"
+
+
+class OpenClawClient:
+    """OpenClaw API 客户端"""
+    
+    def __init__(self, base_url: str):
+        self.base_url = base_url
+        self.session: Optional[aiohttp.ClientSession] = None
+    
+    async def __aenter__(self):
+        self.session = aiohttp.ClientSession()
+        return self
+    
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if self.session:
+            await self.session.close()
+    
+    async def chat(
+        self,
+        message: str,
+        model: str = "qwen2.5",
+        conversation_id: Optional[str] = None,
+        stream: bool = False
+    ) -> Dict[str, Any]:
+        """发送聊天请求到OpenClaw"""
+        
+        url = f"{self.base_url}/api/v1/chat"
+        
+        payload = {
+            "model": model,
+            "messages": [
+                {"role": "user", "content": message}
+            ],
+            "stream": stream,
+            "temperature": 0.7,
+            "max_tokens": 2048
+        }
+        
+        if conversation_id:
+            payload["conversation_id"] = conversation_id
+        
+        try:
+            async with self.session.post(url, json=payload) as response:
+                if response.status == 200:
+                    return await response.json()
+                else:
+                    error_text = await response.text()
+                    logger.error(f"OpenClaw API错误: {response.status} - {error_text}")
+                    return {
+                        "error": f"API错误: {response.status}",
+                        "content": "抱歉，服务暂时不可用，请稍后重试。"
+                    }
+        except Exception as e:
+            logger.error(f"请求OpenClaw失败: {e}")
+            return {
+                "error": str(e),
+                "content": "抱歉，连接服务失败，请检查网络。"
+            }
+
+
+class FeishuBot:
+    """飞书机器人核心类"""
+    
+    def __init__(self, config: FeishuConfig):
+        self.config = config
+        self.access_token: Optional[str] = None
+        self.token_expire_time: Optional[datetime] = None
+        self.openclaw = OpenClawClient(config.openclaw_base_url)
+        
+        # 会话管理
+        self.conversations: Dict[str, str] = {}  # user_id -> conversation_id
+    
+    async def get_access_token(self) -> str:
+        """获取飞书访问令牌"""
+        
+        # 检查令牌是否有效
+        if self.access_token and self.token_expire_time:
+            if datetime.now() < self.token_expire_time:
+                return self.access_token
+        
+        # 请求新令牌
+        url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, json={
+                "app_id": self.config.app_id,
+                "app_secret": self.config.app_secret
+            }) as response:
+                data = await response.json()
+                
+                if data.get("code") == 0:
+                    self.access_token = data["tenant_access_token"]
+                    # 令牌有效期2小时，提前5分钟刷新
+                    self.token_expire_time = datetime.now().timestamp() + data["expire"] - 300
+                    return self.access_token
+                else:
+                    raise Exception(f"获取访问令牌失败: {data}")
+    
+    def verify_signature(self, timestamp: str, nonce: str, body: str, signature: str) -> bool:
+        """验证飞书请求签名"""
+        
+        # 构造签名字符串
+        sign_str = f"{timestamp}\n{nonce}\n{body}\n"
+        
+        # 计算签名
+        computed = hmac.new(
+            self.config.encrypt_key.encode(),
+            sign_str.encode(),
+            hashlib.sha256
+        ).digest()
+        computed_b64 = base64.b64encode(computed).decode()
+        
+        return computed_b64 == signature
+    
+    async def send_message(
+        self,
+        receive_id: str,
+        content: str,
+        msg_type: str = "text",
+        receive_id_type: str = "open_id"
+    ):
+        """发送消息到飞书"""
+        
+        token = await self.get_access_token()
+        url = "https://open.feishu.cn/open-apis/im/v1/messages"
+        
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        
+        # 构造消息内容
+        if msg_type == "text":
+            content_json = json.dumps({"text": content})
+        elif msg_type == "markdown":
+            content_json = json.dumps({"content": content})
+        else:
+            content_json = content
+        
+        params = {"receive_id_type": receive_id_type}
+        payload = {
+            "receive_id": receive_id,
+            "msg_type": msg_type,
+            "content": content_json
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                url,
+                headers=headers,
+                params=params,
+                json=payload
+            ) as response:
+                data = await response.json()
+                
+                if data.get("code") != 0:
+                    logger.error(f"发送消息失败: {data}")
+                else:
+                    logger.info(f"消息发送成功: {receive_id}")
+    
+    async def handle_message(self, event: Dict[str, Any]):
+        """处理收到的消息"""
+        
+        message = event.get("message", {})
+        sender = event.get("sender", {})
+        
+        # 获取发送者信息
+        sender_id = sender.get("sender_id", {}).get("open_id")
+        sender_name = sender.get("sender_id", {}).get("name", "用户")
+        
+        # 获取消息内容
+        msg_type = message.get("message_type")
+        content = json.loads(message.get("content", "{}"))
+        
+        # 只处理文本消息
+        if msg_type != "text":
+            await self.send_message(
+                sender_id,
+                "目前我只支持文本消息哦～",
+                receive_id_type="open_id"
+            )
+            return
+        
+        user_message = content.get("text", "").strip()
+        
+        # 忽略空消息
+        if not user_message:
+            return
+        
+        logger.info(f"收到消息 from {sender_name}: {user_message[:50]}...")
+        
+        # 获取或创建会话ID
+        conversation_id = self.conversations.get(sender_id)
+        
+        # 显示"正在输入"
+        await self.send_message(
+            sender_id,
+            "🤔 正在思考中...",
+            receive_id_type="open_id"
+        )
+        
+        # 调用OpenClaw
+        async with self.openclaw:
+            response = await self.openclaw.chat(
+                message=user_message,
+                model=self.config.default_model,
+                conversation_id=conversation_id
+            )
+        
+        # 保存会话ID
+        if "conversation_id" in response:
+            self.conversations[sender_id] = response["conversation_id"]
+        
+        # 发送回复
+        reply_content = response.get("content", "抱歉，处理您的请求时出现了问题。")
+        
+        # 添加引用格式
+        formatted_reply = f"💬 **回复**\n\n{reply_content}\n\n---\n*Powered by OpenClaw + {self.config.default_model}*"
+        
+        await self.send_message(
+            sender_id,
+            formatted_reply,
+            msg_type="markdown",
+            receive_id_type="open_id"
+        )
+    
+    async def handle_event(self, event: Dict[str, Any]):
+        """处理飞书事件"""
+        
+        event_type = event.get("header", {}).get("event_type")
+        
+        if event_type == "im.message.receive_v1":
+            await self.handle_message(event.get("event", {}))
+        elif event_type == "im.chat.member.user.added_v1":
+            # 被添加进群
+            chat_id = event.get("event", {}).get("chat_id")
+            await self.send_message(
+                chat_id,
+                "👋 大家好！我是OpenClaw AI助手，\n"
+                "可以直接@我提问，我会尽力帮助您！\n"
+                "支持功能：问答、代码、分析、写作",
+                receive_id_type="chat_id"
+            )
+
+
+# Flask Webhook服务
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# 初始化机器人
+config = FeishuConfig(
+    app_id="cli_xxxxxxxxxxxxxxxx",  # 替换为你的App ID
+    app_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  # 替换为你的App Secret
+    verify_token="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  # 替换为你的Verify Token
+    encrypt_key="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  # 替换为你的Encrypt Key
+    openclaw_base_url="http://localhost:8080",
+    default_model="qwen2.5"
+)
+
+bot = FeishuBot(config)
+
+
+@app.route("/webhook/feishu", methods=["POST"])
+def feishu_webhook():
+    """飞书Webhook入口"""
+    
+    data = request.get_json()
+    
+    # 处理URL验证
+    if data.get("type") == "url_verification":
+        challenge = data.get("challenge")
+        return jsonify({"challenge": challenge})
+    
+    # 验证签名（生产环境建议开启）
+    # timestamp = request.headers.get("X-Lark-Request-Timestamp")
+    # nonce = request.headers.get("X-Lark-Request-Nonce")
+    # signature = request.headers.get("X-Lark-Signature")
+    # body = request.get_data(as_text=True)
+    # 
+    # if not bot.verify_signature(timestamp, nonce, body, signature):
+    #     return jsonify({"code": 403, "msg": "Invalid signature"}), 403
+    
+    # 处理事件
+    event = data.get("event")
+    if event:
+        asyncio.run(bot.handle_event(event))
+    
+    return jsonify({"code": 0, "msg": "success"})
+
+
+@app.route("/health", methods=["GET"])
+def health_check():
+    """健康检查"""
+    return jsonify({
+        "status": "healthy",
+        "service": "OpenClaw Feishu Bot",
+        "timestamp": datetime.now().isoformat()
+    })
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=False)
 ```
 
-#### 步骤3：测试模型
+### 4.3 部署机器人服务
 
-最后，需要测试模型的运行效果。可以使用OpenClaw的API或命令行工具进行测试。例如，测试文心一言模型：
+创建 `Dockerfile.bot`：
 
-```python
-# 测试模型
-input_text = '你好，我是文心一言'
-output_text = model.generate(input_text)
-print(output_text)
-```
+```dockerfile
+FROM python:3.11-slim
 
-### 3.4 启动OpenClaw服务
+WORKDIR /app
 
-部署好模型后，需要启动OpenClaw服务，以便其他应用程序调用。以下是启动OpenClaw服务的步骤：
+# 安装依赖
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-#### 步骤1：配置服务
+# 复制代码
+COPY feishu_bot.py .
 
-首先，需要配置OpenClaw服务的参数和端口。可以使用OpenClaw的配置文件或命令行工具进行配置。例如，配置服务端口：
-
-```python
-import openclaw
-
-# 配置服务
-server_config = {
-    'port': 8000,
-    'host': '0.0.0.0',
-    'model_config': model_config
-}
+# 暴露端口
+EXPOSE 5000
 
 # 启动服务
-server = openclaw.start_server(server_config)
+CMD ["python", "feishu_bot.py"]
 ```
 
-#### 步骤2：测试服务
+创建 `requirements.txt`：
 
-然后，需要测试服务的运行效果。可以使用curl或Python的requests库进行测试。例如，测试服务：
-
-```bash
-# 使用curl测试服务
-curl -X POST http://localhost:8000/generate -d '{"input_text": "你好，我是文心一言"}'
+```
+flask==3.0.0
+aiohttp==3.9.0
 ```
 
-#### 步骤3：集成到应用程序
+添加到 `docker-compose.yml`：
 
-最后，需要将OpenClaw服务集成到应用程序中。可以使用OpenClaw的API或SDK进行集成。例如，集成到Python应用程序：
+```yaml
+  feishu-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    container_name: openclaw-feishu-bot
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - FEISHU_APP_ID=cli_xxxxxxxxxxxxxxxx
+      - FEISHU_APP_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - FEISHU_VERIFY_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - FEISHU_ENCRYPT_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - OPENCLAW_BASE_URL=http://openclaw:8080
+      - DEFAULT_MODEL=qwen2.5
+    depends_on:
+      - openclaw
+    networks:
+      - openclaw-network
+```
+
+### 4.4 高级功能：知识库集成
+
+让机器人能够回答企业内部知识：
 
 ```python
-import requests
+class KnowledgeBase:
+    """企业知识库"""
+    
+    def __init__(self, openclaw_url: str):
+        self.openclaw_url = openclaw_url
+        self.documents = []
+    
+    async def add_document(self, title: str, content: str, metadata: Dict = None):
+        """添加文档到知识库"""
+        
+        url = f"{self.openclaw_url}/api/v1/knowledge/documents"
+        
+        payload = {
+            "title": title,
+            "content": content,
+            "metadata": metadata or {}
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, json=payload) as response:
+                return await response.json()
+    
+    async def query(self, question: str, top_k: int = 3) -> List[Dict]:
+        """检索相关知识"""
+        
+        url = f"{self.openclaw_url}/api/v1/knowledge/query"
+        
+        payload = {
+            "query": question,
+            "top_k": top_k
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, json=payload) as response:
+                data = await response.json()
+                return data.get("documents", [])
+    
+    async def chat_with_knowledge(
+        self,
+        message: str,
+        model: str = "qwen2.5"
+    ) -> str:
+        """基于知识库回答"""
+        
+        # 检索相关知识
+        relevant_docs = await self.query(message)
+        
+        # 构建增强提示
+        context = "\n\n".join([
+            f"文档{i+1}: {doc['title']}\n{doc['content'][:500]}"
+            for i, doc in enumerate(relevant_docs)
+        ])
+        
+        enhanced_prompt = f"""基于以下参考资料回答问题：
 
-# 调用OpenClaw服务
-response = requests.post('http://localhost:8000/generate', json={'input_text': '你好，我是文心一言'})
-output_text = response.json()['output_text']
-print(output_text)
+{context}
+
+用户问题：{message}
+
+请根据参考资料回答，如果资料不足以回答，请说明。"""
+        
+        # 调用模型
+        async with aiohttp.ClientSession() as session:
+            url = f"{self.openclaw_url}/api/v1/chat"
+            async with session.post(url, json={
+                "model": model,
+                "messages": [{"role": "user", "content": enhanced_prompt}]
+            }) as response:
+                data = await response.json()
+                return data.get("content", "")
+
+
+# 在FeishuBot中添加知识库支持
+class FeishuBotWithKB(FeishuBot):
+    def __init__(self, config: FeishuConfig):
+        super().__init__(config)
+        self.kb = KnowledgeBase(config.openclaw_base_url)
+    
+    async def handle_message(self, event: Dict[str, Any]):
+        """增强版消息处理，支持知识库"""
+        
+        message = event.get("message", {})
+        sender = event.get("sender", {})
+        sender_id = sender.get("sender_id", {}).get("open_id")
+        
+        content = json.loads(message.get("content", "{}"))
+        user_message = content.get("text", "").strip()
+        
+        # 检查是否触发知识库模式
+        if user_message.startswith("/kb "):
+            # 知识库查询模式
+            query = user_message[4:]
+            await self.send_message(sender_id, "🔍 正在查询知识库...")
+            
+            response = await self.kb.chat_with_knowledge(query)
+            
+            await self.send_message(
+                sender_id,
+                f"📚 **知识库回答**\n\n{response}",
+                msg_type="markdown"
+            )
+        else:
+            # 普通对话模式
+            await super().handle_message(event)
 ```
 
+## 五、生产环境优化
+
+### 5.1 性能监控
+
+创建监控配置 `prometheus.yml`：
+
+```yaml
+scrape_configs:
+  - job_name: 'openclaw'
+    static_configs:
+      - targets: ['openclaw:8080']
+  
+  - job_name: 'ollama'
+    static_configs:
+      - targets: ['ollama:11434']
+```
+
+### 5.2 负载均衡配置
+
+```nginx
+# nginx.conf
+upstream openclaw_backend {
+    least_conn;
+    server openclaw:8080 weight=5;
+    server openclaw-backup:8080 backup;
+}
+
+server {
+    listen 80;
+    server_name ai.yourcompany.com;
+    
+    location / {
+        proxy_pass http://openclaw_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        
+        # WebSocket支持
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+```
+
+### 5.3 备份策略
+
+```bash
+#!/bin/bash
+# backup.sh - 每日备份脚本
+
+BACKUP_DIR="/backup/openclaw/$(date +%Y%m%d)"
+mkdir -p $BACKUP_DIR
+
+# 备份数据库
+docker exec openclaw-postgres pg_dump -U openclaw openclaw > $BACKUP_DIR/database.sql
+
+# 备份配置
+cp -r config $BACKUP_DIR/
+
+# 备份模型（可选，模型文件较大）
+# cp -r ollama_data $BACKUP_DIR/
+
+# 压缩
+ tar -czf $BACKUP_DIR.tar.gz $BACKUP_DIR
+ rm -rf $BACKUP_DIR
+
+# 保留最近7天备份
+find /backup/openclaw -name "*.tar.gz" -mtime +7 -delete
+```
+
+## 六、常见问题与解决方案
+
+### 6.1 模型加载失败
+
+**问题**：Ollama无法加载大模型，显存不足
+
+**解决**：
+```bash
+# 使用量化版本
+ollama pull qwen2.5:14b-q4_K_M
+
+# 或启用CPU推理
+OLLAMA_CPU_ONLY=1 ollama serve
+```
+
+### 6.2 飞书消息延迟
+
+**问题**：消息响应慢，用户体验差
+
+**解决**：
+```python
+# 添加异步处理和流式响应
+async def stream_response(self, message: str, sender_id: str):
+    """流式响应，提升用户体验"""
+    
+    # 先发送"正在输入"
+    await self.send_message(sender_id, "🤔 思考中...")
+    
+    # 流式获取响应
+    buffer = ""
+    last_update = time.time()
+    
+    async for chunk in self.openclaw.stream_chat(message):
+        buffer += chunk
+        
+        # 每2秒更新一次消息
+        if time.time() - last_update > 2:
+            await self.update_message(
+                message_id,
+                f"💬 回复中...\n\n{buffer}..."
+            )
+            last_update = time.time()
+    
+    # 发送最终回复
+    await self.update_message(message_id, buffer)
+```
+
+### 6.3 高并发处理
+
+**问题**：多人同时使用时响应慢
+
+**解决**：
+```yaml
+# docker-compose.yml 扩展
+services:
+  openclaw:
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '4'
+          memory: 16G
+    
+  ollama:
+    deploy:
+      replicas: 2
+```
+
+## 七、总结：企业AI的自主可控之路
+
+通过OpenClaw + Ollama + 飞书机器人的组合，我们实现了：
+
+✅ **数据安全**：所有数据留在企业内网  
+✅ **成本可控**：无需按Token付费，一次性投入  
+✅ **响应快速**：内网延迟<50ms  
+✅ **灵活扩展**：支持多种国产模型和业务集成  
+✅ **用户体验**：与飞书无缝集成，零学习成本
+
+这不仅是技术的胜利，更是**企业AI自主可控**的实践。
+
+当其他公司还在为OpenAI的API限流发愁时，你已经拥有了自己的AI基础设施。
+
+当其他公司担心数据泄露时，你的数据安全地跑在自己的服务器上。
+
+这就是OpenClaw + Ollama带来的**企业级AI自由**。
+
 ---
 
-## 四、国产AI模型的对比与选择
+**项目地址**：https://github.com/openclaw/openclaw  
+**文档中心**：https://docs.openclaw.io  
+**社区论坛**：https://forum.openclaw.io
 
-### 4.1 模型对比
-
-| 模型 | 所属公司 | 模型类型 | 速度 | 质量 | 性价比 | 适用场景 |
-|-----|--------|--------|----|----|------|--------|
-| 文心一言 | 百度 | LLM | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 自然语言处理、对话系统 |
-| 通义千问 | 阿里巴巴 | LLM | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 自然语言处理、对话系统 |
-| 豆包 | 字节跳动 | LLM | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 自然语言处理、对话系统 |
-| 盘古大模型 | 华为 | 多模态模型 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 多模态处理、跨模态应用 |
-| 天工大模型 | 京东 | LLM | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 自然语言处理、对话系统 |
-
-### 4.2 选择建议
-
-在选择国产AI模型时，需要考虑以下因素：
-
-#### 1. 任务类型
-- 如果需要处理自然语言处理任务，可以选择文心一言、通义千问、豆包或天工大模型。
-- 如果需要处理多模态任务，可以选择盘古大模型。
-
-#### 2. 性能要求
-- 如果对模型速度要求较高，可以选择豆包或文心一言。
-- 如果对模型质量要求较高，可以选择文心一言、通义千问或豆包。
-
-#### 3. 成本要求
-- 如果对成本要求较高，可以选择免费版的文心一言、通义千问或豆包。
-- 如果需要更高的性能和功能，可以选择付费版的模型。
-
-#### 4. 技术支持
-- 如果需要技术支持，可以选择百度、阿里巴巴、字节跳动等大型公司的模型。
-
----
-
-## 五、最佳实践
-
-### 5.1 硬件选择
-
-在选择硬件时，需要考虑以下因素：
-
-#### 1. GPU选择
-- **NVIDIA GPU**：CUDA生态完善，支持多种AI框架和模型。
-- **AMD GPU**：价格合理，性能不错，但生态不如NVIDIA完善。
-- **国产GPU**：如寒武纪、海光等，支持国产AI框架和模型，适合国产化需求。
-
-#### 2. 内存选择
-- **内存大小**：建议选择16GB以上的内存，以支持模型的运行和数据的处理。
-- **内存频率**：建议选择高频率的内存，以提高数据传输速度。
-
-#### 3. 存储选择
-- **存储类型**：建议选择SSD硬盘，以提高模型文件的读取速度。
-- **存储大小**：建议选择50GB以上的可用空间，以存储模型文件和数据。
-
-### 5.2 模型优化
-
-在部署模型时，需要对模型进行优化，以提高模型的运行速度和性能。以下是推荐的优化方法：
-
-#### 1. 模型量化
-- **INT8量化**：将模型参数从FP32量化为INT8，减少模型大小和内存占用，提高模型运行速度。
-- **FP16量化**：将模型参数从FP32量化为FP16，减少模型大小和内存占用，提高模型运行速度。
-
-#### 2. 模型蒸馏
-- **知识蒸馏**：将大模型的知识蒸馏到小模型中，减少模型大小和内存占用，提高模型运行速度。
-
-#### 3. 模型并行
-- **数据并行**：将数据分配到多个GPU上，提高模型训练速度。
-- **模型并行**：将模型分配到多个GPU上，提高模型训练速度。
-
-### 5.3 服务优化
-
-在启动OpenClaw服务时，需要对服务进行优化，以提高服务的响应速度和稳定性。以下是推荐的优化方法：
-
-#### 1. 多线程处理
-- **多线程**：使用多线程处理请求，提高服务的并发处理能力。
-- **异步处理**：使用异步处理请求，提高服务的响应速度。
-
-#### 2. 缓存优化
-- **请求缓存**：缓存常用请求的结果，减少模型推理次数，提高服务响应速度。
-- **模型缓存**：缓存模型的中间结果，减少模型推理时间，提高服务响应速度。
-
-#### 3. 负载均衡
-- **负载均衡**：将请求分配到多个服务实例上，提高服务的并发处理能力和稳定性。
-
-### 5.4 安全优化
-
-在搭建本地AI服务时，需要考虑安全问题，以保护数据隐私和服务安全。以下是推荐的安全优化方法：
-
-#### 1. 数据加密
-- **传输加密**：使用HTTPS协议加密数据传输，保护数据隐私。
-- **存储加密**：使用加密算法加密数据存储，保护数据隐私。
-
-#### 2. 访问控制
-- **身份验证**：使用用户名和密码或API密钥进行身份验证，控制服务访问权限。
-- **授权管理**：使用角色和权限进行授权管理，控制服务访问范围。
-
-#### 3. 安全审计
-- **日志记录**：记录服务的访问日志和操作日志，便于安全审计和故障排查。
-- **安全监控**：监控服务的运行状态和安全事件，及时发现和处理安全问题。
-
----
-
-## 六、总结
-
-### 6.1 重点回顾
-
-1. **OpenClaw简介**：OpenClaw是一个开源的AI框架，提供了灵活的模型部署和管理能力。
-2. **本地搭建OpenClaw的准备工作**：包括硬件要求、软件要求和网络要求。
-3. **本地搭建OpenClaw的步骤**：包括安装OpenClaw、选择国产AI模型、部署模型和启动服务。
-4. **国产AI模型的对比与选择**：包括文心一言、通义千问、豆包、盘古大模型和天工大模型。
-5. **最佳实践**：包括硬件选择、模型优化、服务优化和安全优化。
-
-### 6.2 学习建议
-
-1. **理解原理**：不要死记硬背搭建步骤，要理解OpenClaw的原理和思想。
-2. **多实践**：通过实践来加深对OpenClaw的理解和掌握。
-3. **关注性能**：关注模型的性能和服务的响应速度，不断优化模型和服务。
-4. **保护安全**：关注数据隐私和服务安全，采取必要的安全措施。
-
-### 6.3 未来展望
-
-随着AI技术的不断发展，OpenClaw和国产AI模型将不断完善和优化，为本地AI服务搭建提供更好的支持。未来的发展趋势包括：
-
-- **模型轻量化**：模型将越来越轻量化，适合在边缘设备上部署和运行。
-- **多模态融合**：模型将支持更多模态的处理，实现多模态融合。
-- **国产化**：国产AI模型将不断发展和完善，成为本地AI服务搭建的主流选择。
-
----
-
-## 参考资料
-
-1. OpenClaw官方文档：https://openclaw.readthedocs.io
-2. 文心一言官方网站：https://ernie.bce.baidu.com
-3. 通义千问官方网站：https://tongyi.aliyun.com
-4. 豆包官方网站：https://www.doubao.com
-5. 盘古大模型官方网站：https://developer.huawei.com/consumer/cn/hiai
-6. 天工大模型官方网站：https://tiangong.jd.com
+**相关阅读**：
+- [Ollama深度解析](095-ollama-deep-dive.md)
+- [AI全链路知识图谱](098-ai-knowledge-map.md)
