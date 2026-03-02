@@ -7,8 +7,6 @@ readTime: 15
 tags: JavaScript, 底层系列
 ---
 
-在 JavaScript 中
-
 ## 构造函数创建对象
 
 我们先使用构造函数创建一个对象：

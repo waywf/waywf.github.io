@@ -7,8 +7,6 @@ date: 2026-02-22
 tags: Tailwind, CSS
 ---
 
-Tailwind CSS 是一个功能类优先的 CSS 框架，它允许你直接在 HTML 中使用预定义的类名来构建设计。
-
 ## 为什么选择 Tailwind CSS？
 
 ### 优势
