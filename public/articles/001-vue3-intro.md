@@ -7,8 +7,6 @@ date: 2026-02-23
 tags: Vue3, JavaScript
 ---
 
-# Vue 3 Composition API 入门指南
-
 Vue 3 引入了 Composition API，这是一种全新的组织组件逻辑的方式。相比 Options API，Composition API 提供了更好的代码复用性和灵活性。
 
 ## 什么是 Composition API？

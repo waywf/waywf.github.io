@@ -7,7 +7,7 @@ readTime: 15
 tags: JavaScript, 底层系列
 ---
 
-# JavaScript深入之从原型到原型链
+在 JavaScript 中
 
 ## 构造函数创建对象
 
