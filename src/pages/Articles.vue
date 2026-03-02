@@ -21,13 +21,19 @@
         <!-- Search Bar -->
         <div class="mb-6 md:mb-8">
           <div class="relative">
-            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" fill="none"
+            <svg v-if="!isLoading"
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
+            <div v-else class="absolute left-4 top-1/2 transform -translate-y-1/2">
+              <div class="w-5 h-5 border-2 border-muted-foreground border-t-transparent rounded-full animate-spin">
+              </div>
+            </div>
             <input v-model="searchQuery" type="text" placeholder="搜索文章..."
-              class="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none transition-colors" />
+              class="w-full pl-12 pr-4 py-3 bg-card border-2 border-border rounded text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none transition-colors"
+              :disabled="isLoading" />
           </div>
         </div>
 
@@ -38,8 +44,9 @@
               'px-3 py-2 md:px-4 md:py-2 rounded font-bold transition-all text-sm md:text-base',
               selectedCategory === category
                 ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/50'
-                : 'border-2 border-border text-foreground hover:border-primary'
-            ]">
+                : 'border-2 border-border text-foreground hover:border-primary',
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            ]" :disabled="isLoading">
             {{ category }}
           </button>
         </div>
@@ -52,8 +59,9 @@
               'px-3 py-1 rounded text-xs md:text-sm transition-all',
               selectedTag === tag
                 ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/50'
-                : 'border border-border text-muted-foreground hover:border-accent'
-            ]">
+                : 'border border-border text-muted-foreground hover:border-accent',
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            ]" :disabled="isLoading">
               {{ tag }}
             </button>
             <!-- 省略号指示器 -->
@@ -62,7 +70,8 @@
             </div>
           </div>
           <button v-if="filteredTags.length > 8" @click="showAllTags = !showAllTags"
-            class="p-2 bg-card rounded-full hover:bg-muted transition-colors flex-shrink-0 self-start shadow-lg shadow-accent/30">
+            class="p-2 bg-card rounded-full hover:bg-muted transition-colors flex-shrink-0 self-start shadow-lg shadow-accent/30"
+            :disabled="isLoading" :class="[isLoading ? 'opacity-50 cursor-not-allowed' : '']">
             <svg :class="['w-4 h-4 text-accent transition-transform duration-300', showAllTags ? 'rotate-180' : '']"
               fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -75,7 +84,29 @@
     <!-- Articles Grid -->
     <section class="py-8 md:py-12 flex-1">
       <div class="container px-4 md:px-0">
-        <div v-if="displayedArticles.length > 0" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <!-- Loading State -->
+        <div v-if="isLoading && displayedArticles.length === 0"
+          class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div v-for="_ in 4" :key="_" class="p-6 border-2 border-border rounded bg-card/50 animate-pulse">
+            <div class="flex justify-between items-start mb-3">
+              <div class="w-20 h-5 bg-muted rounded"></div>
+              <div class="w-24 h-4 bg-muted rounded"></div>
+            </div>
+            <div class="h-6 bg-muted rounded mb-3"></div>
+            <div class="h-4 bg-muted rounded mb-4"></div>
+            <div class="flex items-center justify-between">
+              <div class="flex gap-2">
+                <div class="w-12 h-3 bg-muted rounded"></div>
+                <div class="w-12 h-3 bg-muted rounded"></div>
+              </div>
+              <div class="w-20 h-3 bg-muted rounded"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Articles Grid -->
+        <div v-else-if="displayedArticles.length > 0"
+          class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <RouterLink v-for="article in displayedArticles" :key="article.id" :to="`/article/${article.id}`"
             class="group p-6 border-2 border-border rounded bg-card/50 hover:border-primary transition-all hover:shadow-lg hover:shadow-primary/20">
             <!-- <div class="absolute inset-0 bg-card/70 rounded"></div> -->
@@ -116,14 +147,16 @@
           </button>
         </div>
 
-        <div v-else-if="displayedArticles.length === 0" class="text-center py-12">
+        <!-- No Results State -->
+        <div v-else-if="!isLoading && displayedArticles.length === 0" class="text-center py-12">
           <p class="text-muted-foreground text-lg mb-4">
             <span class="text-accent">{'>> '}</span>
             未找到更多的文章
           </p>
           <button @click="resetFilters"
-            class="px-4 py-2 border-2 border-primary text-primary rounded hover:bg-primary/10 transition-all">
-            重置筛选
+            class="px-4 py-2 border-2 border-primary text-primary rounded hover:bg-primary/10 transition-all"
+            :disabled="isLoading" :class="[isLoading ? 'opacity-50 cursor-not-allowed' : '']">
+            {{ isLoading ? '重置中...' : '重置筛选' }}
           </button>
         </div>
 
@@ -241,10 +274,12 @@ onMounted(async () => {
 
 // 加载文章（根据当前筛选条件和页码）
 const loadArticles = async () => {
+  isLoading.value = true
   const ids = getFilteredArticleIds()
   const pageIds = ids.slice(0, currentPage.value * articlesPerPage.value)
   const articles = await loadArticlesByIds(pageIds)
   displayedArticles.value = articles
+  isLoading.value = false
 }
 
 // 监听过滤条件变化，重置分页并重新加载
@@ -258,15 +293,17 @@ watch(selectedCategory, () => {
   selectedTag.value = '全部标签'
 }, { flush: 'sync' })
 
+const isLoading = ref(false)
+
 const resetFilters = async () => {
+  isLoading.value = true
   selectedCategory.value = '全部'
   selectedTag.value = '全部标签'
   searchQuery.value = ''
   currentPage.value = 1
   await loadArticles()
+  isLoading.value = false
 }
-
-const isLoading = ref(false)
 
 const loadMore = async () => {
   isLoading.value = true
