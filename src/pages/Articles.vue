@@ -274,6 +274,7 @@ onMounted(async () => {
 
 // 加载文章（根据当前筛选条件和页码）
 const loadArticles = async () => {
+  // 确保loading状态为true
   isLoading.value = true
   const ids = getFilteredArticleIds()
   const pageIds = ids.slice(0, currentPage.value * articlesPerPage.value)
@@ -285,6 +286,9 @@ const loadArticles = async () => {
 // 监听过滤条件变化，重置分页并重新加载
 watch([selectedCategory, selectedTag, searchQuery], async () => {
   currentPage.value = 1
+  // 清空旧文章并显示loading
+  displayedArticles.value = []
+  isLoading.value = true
   await loadArticles()
 })
 
