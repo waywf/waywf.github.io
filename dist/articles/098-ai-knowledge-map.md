@@ -157,7 +157,7 @@ readTime: 40
 
 | 模型 | 官网 | 特点 | 应用场景 |
 |------|------|------|----------|
-| **通义千问 Qwen2.5** | [tongyi.aliyun.com](https://tongyi.aliyun.com/) | 72B开源最强 | 通用对话、代码 |
+| **通义千问 Qwen3.5** | [tongyi.aliyun.com](https://tongyi.aliyun.com/) | 397B开源最强 | 通用对话、代码 |
 | **文心一言 4.0** | [yiyan.baidu.com](https://yiyan.baidu.com/) | 百度生态集成 | 搜索、办公 |
 | **智谱清言 GLM-4** | [chatglm.cn](https://chatglm.cn/) | 清华出品 | 学术研究、长文本 |
 | **讯飞星火 4.0** | [xinghuo.xfyun.cn](https://xinghuo.xfyun.cn/) | 语音能力突出 | 语音交互 |
